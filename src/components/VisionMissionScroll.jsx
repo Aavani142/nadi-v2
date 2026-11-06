@@ -102,8 +102,8 @@ export default function VisionMissionScroll({ id }) {
             <Img photo={c.photo} sizes="100vw" alt="" />
           </div>
         ))}
-        <div aria-hidden="true" className="absolute inset-0 bg-[#061D35]/70" />
-        <div aria-hidden="true" className="absolute inset-0" style={{ background: 'linear-gradient(to right, rgba(6,29,53,.85), rgba(6,29,53,.35) 60%, rgba(6,29,53,.6))' }} />
+        <div aria-hidden="true" className="absolute inset-0 bg-[#073058]/35" />
+        <div aria-hidden="true" className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(7,48,88,.15) 0%, rgba(7,48,88,.55) 45%, rgba(7,48,88,.92) 100%), linear-gradient(to right, rgba(7,48,88,.55), rgba(7,48,88,0) 60%)' }} />
 
         <div className="frame relative h-full">
           <div className="absolute inset-x-5 top-[54%] sm:inset-x-8 lg:inset-x-12">
@@ -140,7 +140,7 @@ export default function VisionMissionScroll({ id }) {
             <div aria-hidden="true" className="absolute inset-0">
               <Img photo={c.photo} sizes="100vw" alt="" />
             </div>
-            <div aria-hidden="true" className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(6,29,53,.97) 0%, rgba(6,29,53,.88) 42%, rgba(6,29,53,.35) 75%, rgba(6,29,53,.55) 100%)' }} />
+            <div aria-hidden="true" className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(7,48,88,.96) 0%, rgba(7,48,88,.85) 42%, rgba(7,48,88,.3) 75%, rgba(7,48,88,.5) 100%)' }} />
             <div className="frame relative pb-14 pt-28 sm:pb-16">
               <div className="flex items-center justify-between">
                 <p className="eyebrow text-ivory/65">Our</p>

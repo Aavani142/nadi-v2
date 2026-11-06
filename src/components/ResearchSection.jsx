@@ -70,7 +70,7 @@ export default function ResearchSection() {
             </p>
           )}
         </div>
-        <p className="mt-8 text-[12.5px] text-ivory/45">Source: Youth for Action chapter, Annual Report 2025–2026; NADI Foundation pamphlet.</p>
+        <p className="mt-8 text-[12.5px] text-ivory/70">Source: Youth for Action chapter, Annual Report 2025–2026; NADI Foundation pamphlet.</p>
       </div>
     </section>
   )

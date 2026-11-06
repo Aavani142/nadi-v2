@@ -23,9 +23,9 @@ function wavePath(h, amp, cycles, phase) {
 }
 // back → front: [height px, amplitude, cycles, phase, colour, drift seconds]
 const WAVES = [
-  [150, 34, 1, 0.4, '#0B3C68', 26],
-  [118, 26, 1, 2.2, '#0D4A80', 19],
-  [84, 18, 1, 1.1, '#1A5E98', 14],
+  [150, 34, 1, 0.4, '#10589A', 26],
+  [118, 26, 1, 2.2, '#1B6AAE', 19],
+  [84, 18, 1, 1.1, '#2C80C4', 14],
 ]
 
 function useRealProgress() {
@@ -97,9 +97,9 @@ export default function IntroLoader({ onReveal, onDone }) {
   }, [])
 
   return (
-    <div ref={root} role="status" aria-live="polite" className="fixed inset-0 z-[100] overflow-hidden" style={{ background: '#061A30' }}>
+    <div ref={root} role="status" aria-live="polite" className="fixed inset-0 z-[100] overflow-hidden" style={{ background: '#0B4880' }}>
       <span className="sr-only">Loading NADI Foundation</span>
-      <div aria-hidden="true" className="ld-glow absolute inset-0" style={{ background: 'radial-gradient(60% 55% at 50% 42%, #10345C 0%, rgba(16,52,92,0.45) 45%, rgba(6,26,48,0) 75%)' }} />
+      <div aria-hidden="true" className="ld-glow absolute inset-0" style={{ background: 'radial-gradient(60% 55% at 50% 42%, #1D6CB2 0%, rgba(29,108,178,0.45) 45%, rgba(11,72,128,0) 75%)' }} />
 
       {/* the river, in three layers along the bottom */}
       <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-[150px] sm:h-[170px]">

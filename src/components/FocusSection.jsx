@@ -13,10 +13,12 @@ import { BreathMotif, PathMotif, GatherMotif } from './FocusMotifs.jsx'
  * The same experience on phones, tablets and desktop; tabs jump straight to an area.
  * Reduced motion: the three areas are simply listed.
  */
+// one family: warm-light grounds a shade apart, accents in NADI's own tones (Kappiness terracotta,
+// Prabodhini leaf green, NADI logo blue) — distinct per area, but they belong together
 const LOOK = {
-  'mental-health': { ground: '#1E1735', accent: '#FFA584', Motif: BreathMotif },
-  education: { ground: '#0E2A24', accent: '#8FE3B0', Motif: PathMotif },
-  community: { ground: '#0A2340', accent: '#7CC0F2', Motif: GatherMotif },
+  'mental-health': { ground: '#F8EEE8', accent: '#C2603F', Motif: BreathMotif },
+  education: { ground: '#EDF4EE', accent: '#2E7D57', Motif: PathMotif },
+  community: { ground: '#E9F1F9', accent: '#0468B1', Motif: GatherMotif },
 }
 const N = focusAreas.length
 
@@ -46,11 +48,11 @@ function Chapter({ area, active, index }) {
           <span className="fc-num display text-[clamp(2.4rem,8vw,4.6rem)] leading-none" style={{ color: accent }}>{area.n}</span>
           <span className="fc-rule h-px flex-1 origin-left" style={{ background: accent, opacity: 0.45 }} />
         </div>
-        <h3 className="display mt-2 text-[clamp(2rem,8.6vw,5.2rem)] leading-[0.92] text-white sm:mt-3">
+        <h3 className="display mt-2 text-[clamp(2rem,8.6vw,5.2rem)] leading-[0.92] text-[#09325A] sm:mt-3">
           <Chars text={area.title} />
           {area.sub && <span className="fc-fade accent mt-1 block text-[0.5em] font-normal" style={{ color: accent }}>{area.sub}</span>}
         </h3>
-        <p className="fc-fade mt-3 max-w-xl text-[14.5px] leading-relaxed text-white/75 sm:mt-4 sm:text-[16.5px] [@media(max-height:700px)]:line-clamp-3">{area.text}</p>
+        <p className="fc-fade mt-3 max-w-xl text-[14.5px] leading-relaxed text-[#1C2634]/75 sm:mt-4 sm:text-[16.5px] [@media(max-height:700px)]:line-clamp-3">{area.text}</p>
         <ul className="fc-fade mt-4 hidden flex-wrap gap-2 sm:flex [@media(max-height:760px)]:hidden" aria-label="Focus">
           {area.keywords.map((k) => (
             <li key={k} className="rounded-full border px-3 py-1 font-mono text-[10.5px] uppercase tracking-[0.14em]" style={{ borderColor: `${accent}66`, color: accent }}>{k}</li>
@@ -61,7 +63,7 @@ function Chapter({ area, active, index }) {
             <li key={key}>
               <a href={`#work-${INITIATIVE_IDS[key]}`} tabIndex={active ? 0 : -1}
                 onClick={(e) => { e.preventDefault(); scrollToInitiative(INITIATIVE_IDS[key]) }}
-                className="group inline-flex min-h-[44px] items-center gap-1.5 rounded-full bg-white/10 px-3.5 text-[13.5px] font-semibold sm:gap-2 sm:px-4 sm:text-[14px] text-white transition-colors hover:bg-white hover:text-navy-deep active:scale-[0.97]">
+                className="group inline-flex min-h-[44px] items-center gap-1.5 rounded-full bg-white px-3.5 text-[13.5px] font-semibold text-[#09325A] shadow-[0_6px_18px_-12px_rgba(9,50,90,.6)] transition-colors hover:bg-[#09325A] hover:text-white active:scale-[0.97] sm:gap-2 sm:px-4 sm:text-[14px]">
                 {initiatives[key].name}
                 <ArrowDownRight size={15} className="transition-transform group-hover:translate-x-0.5 group-hover:translate-y-0.5" />
               </a>
@@ -85,9 +87,9 @@ function StaticList() {
               <div className="mx-auto w-[min(72vw,380px)]"><Motif photo={a.photo} color={accent} active={false} /></div>
               <div>
                 <p className="display text-5xl" style={{ color: accent }}>{a.n}</p>
-                <h3 className="display mt-2 text-[clamp(2.1rem,6vw,4.4rem)] leading-[0.95] text-white">{a.title}</h3>
-                <p className="mt-4 max-w-xl text-[16px] leading-relaxed text-white/75">{a.text}</p>
-                <p className="mt-4 text-[14px] font-semibold text-white">{a.initiatives.map((k) => initiatives[k].name).join(' · ')}</p>
+                <h3 className="display mt-2 text-[clamp(2.1rem,6vw,4.4rem)] leading-[0.95] text-[#09325A]">{a.title}</h3>
+                <p className="mt-4 max-w-xl text-[16px] leading-relaxed text-[#1C2634]/75">{a.text}</p>
+                <p className="mt-4 text-[14px] font-semibold text-[#09325A]">{a.initiatives.map((k) => initiatives[k].name).join(' · ')}</p>
               </div>
             </div>
           </div>
@@ -177,9 +179,9 @@ export default function FocusSection() {
       </div>
 
       {reduce ? <StaticList /> : (
-        <div ref={stage} className="relative h-[100svh] min-h-[600px] overflow-hidden text-white" style={{ background: LOOK[focusAreas[0].id].ground }}>
+        <div ref={stage} className="relative h-[100svh] min-h-[600px] overflow-hidden text-[#09325A]" style={{ background: LOOK[focusAreas[0].id].ground }}>
           {/* fine grain + a soft vignette so the colour fields feel like light, not flat fills */}
-          <div aria-hidden="true" className="pointer-events-none absolute inset-0" style={{ background: 'radial-gradient(70% 60% at 70% 45%, rgba(255,255,255,.06), transparent 70%)' }} />
+          <div aria-hidden="true" className="pointer-events-none absolute inset-0" style={{ background: 'radial-gradient(70% 60% at 70% 45%, rgba(255,255,255,.7), transparent 70%)' }} />
 
           <div className="frame relative flex h-full flex-col pb-5 pt-[72px] sm:pt-24">
             {/* tabs — tap to jump; the bar tracks progress */}
@@ -187,12 +189,12 @@ export default function FocusSection() {
               <div role="tablist" aria-label="Core areas" className="grid grid-cols-3 gap-2">
                 {focusAreas.map((a, i) => (
                   <button key={a.id} role="tab" type="button" aria-selected={active === i} onClick={() => jump(i)}
-                    className={`min-h-[44px] text-left font-mono text-[10.5px] uppercase leading-tight tracking-[0.12em] transition-colors sm:text-[11.5px] ${active === i ? 'text-white' : 'text-white/45 hover:text-white/80'}`}>
+                    className={`min-h-[44px] text-left font-mono text-[10.5px] uppercase leading-tight tracking-[0.12em] transition-colors sm:text-[11.5px] ${active === i ? 'text-[#09325A]' : 'text-[#09325A]/45 hover:text-[#09325A]/80'}`}>
                     <span className="tabular-nums">{a.n}</span> <span className="hidden sm:inline">· </span><br className="sm:hidden" />{a.title}
                   </button>
                 ))}
               </div>
-              <div className="mt-1 h-[2px] w-full bg-white/15">
+              <div className="mt-1 h-[2px] w-full bg-[#09325A]/12">
                 <div className="fc-progress h-full origin-left transition-colors duration-500" style={{ transform: `scaleX(${1 / N})`, background: LOOK[focusAreas[active].id].accent }} />
               </div>
             </div>

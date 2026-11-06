@@ -48,7 +48,7 @@ export function BreathMotif({ photo, color, active }) {
         {/* a single point travelling the outer ring — the pace of the breath */}
         <g className="br-orbit"><circle cx="200" cy="12" r="5" fill={color} /></g>
       </svg>
-      <div className="br-photo absolute inset-[22%] overflow-hidden rounded-full ring-1 ring-white/20">
+      <div className="br-photo absolute inset-[22%] overflow-hidden rounded-full ring-4 ring-white shadow-[0_20px_50px_-24px_rgba(9,50,90,.55)]">
         <Img photo={photo} sizes="(min-width:1024px) 22vw, 50vw" />
       </div>
       <p aria-live="off" className="absolute inset-x-0 -bottom-1 text-center font-mono text-[11px] uppercase tracking-[0.3em]" style={{ color }}>{phase}</p>
@@ -84,17 +84,17 @@ export function PathMotif({ photo, color, active }) {
   return (
     <div ref={ref} className="relative aspect-square w-full">
       <svg aria-hidden="true" viewBox="0 0 400 400" className="absolute inset-0 h-full w-full overflow-visible">
-        <path d={PATH} fill="none" stroke={color} strokeOpacity="0.18" strokeWidth="1.5" strokeDasharray="2 7" strokeLinecap="round" />
+        <path d={PATH} fill="none" stroke={color} strokeOpacity="0.3" strokeWidth="1.5" strokeDasharray="2 7" strokeLinecap="round" />
         <path className="lp-line" d={PATH} fill="none" stroke={color} strokeWidth="2.5" strokeLinecap="round" />
         {NODES.map(([x, y], i) => (
           <g key={i} className="lp-node">
-            <circle cx={x} cy={y} r="13" fill="#0E2A24" stroke={color} strokeWidth="2" />
+            <circle cx={x} cy={y} r="13" fill="#FFFFFF" stroke={color} strokeWidth="2" />
             <text x={x} y={y + 4} textAnchor="middle" fill={color} style={{ font: '600 11px "IBM Plex Mono", monospace' }}>{i + 1}</text>
           </g>
         ))}
       </svg>
       {/* the photo in a tall arch — a page, a doorway */}
-      <div className="absolute inset-x-[27%] bottom-[14%] top-[22%] overflow-hidden rounded-t-full ring-1 ring-white/20">
+      <div className="absolute inset-x-[27%] bottom-[14%] top-[22%] overflow-hidden rounded-t-full ring-4 ring-white shadow-[0_20px_50px_-24px_rgba(9,50,90,.55)]">
         <Img photo={photo} sizes="(min-width:1024px) 18vw, 40vw" />
       </div>
       <p className="absolute inset-x-0 -bottom-1 text-center font-mono text-[11px] uppercase tracking-[0.24em]" style={{ color }}>
@@ -142,7 +142,7 @@ export function GatherMotif({ photo, color, active }) {
           {RING.map(([x, y], i) => <circle key={i} className="cg-dot" cx={x} cy={y} r={i % 4 === 0 ? 7 : 5} fill={color} />)}
         </g>
       </svg>
-      <div className="absolute inset-[25%] overflow-hidden rounded-full ring-1 ring-white/20">
+      <div className="absolute inset-[25%] overflow-hidden rounded-full ring-4 ring-white shadow-[0_20px_50px_-24px_rgba(9,50,90,.55)]">
         <Img photo={photo} sizes="(min-width:1024px) 20vw, 46vw" />
       </div>
       <p className="absolute inset-x-0 -bottom-1 text-center font-mono text-[11px] uppercase tracking-[0.3em]" style={{ color }}>{label}</p>

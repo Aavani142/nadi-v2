@@ -5,7 +5,7 @@ import { gsap, revealIn, useGsap } from '../lib/gsap.js'
 import { Img, PillLink } from '../components/ui.jsx'
 
 const giveMail = `mailto:${contact.email}?subject=${encodeURIComponent('Donation to NADI Foundation')}&body=${encodeURIComponent(
-  "Hello NADI team,\n\nI would like to donate to NADI Foundation. Please share how I can contribute.\n\nName:\nPhone:\nArea I'd like to support (optional):\n",
+  "Hello NADI team,\n\nI would like to donate to NADI Foundation. Please share how I can contribute.\n\nName:\nPhone number (required):\nArea I'd like to support (optional):\n",
 )}`
 
 /**
@@ -100,9 +100,9 @@ export default function Donate() {
                 className="group flex min-w-0 flex-col gap-8 border-b border-white/15 py-10 last:border-b-0 md:border-b-0 md:px-8 md:first:pl-0 md:[&:not(:first-child)]:border-l">
                 <span className="grid h-12 w-12 place-items-center rounded-full border border-white/25 transition-colors duration-500 group-hover:bg-ivory group-hover:text-navy-deep"><w.icon size={18} aria-hidden="true" /></span>
                 <span>
-                  <span className="eyebrow block text-ivory/50">{w.k}</span>
+                  <span className="eyebrow block text-ivory/75">{w.k}</span>
                   <span className="mt-2 block break-all text-[clamp(1.15rem,5.4vw,1.4rem)] font-semibold tracking-[-0.02em] sm:break-words">{w.v}</span>
-                  <span className="mt-3 block text-[14px] leading-relaxed text-ivory/60">{w.note}</span>
+                  <span className="mt-3 block text-[14px] leading-relaxed text-ivory/75">{w.note}</span>
                 </span>
               </a>
             ))}

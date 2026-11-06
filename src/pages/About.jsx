@@ -136,7 +136,7 @@ export default function About() {
             </div>
           ))}
         </dl>
-        <p className="frame mt-2 text-[12px] text-fg/45">Source: NADI Foundation pamphlet and Annual Report 2025–2026.</p>
+        <p className="frame mt-2 text-[12px] text-fg/60">Source: NADI Foundation pamphlet and Annual Report 2025–2026.</p>
       </section>
 
       {/* C · Vision & Mission — pinned scroll sequence */}
@@ -154,7 +154,7 @@ export default function About() {
             {focusAreas.map((a, i) => (
               <li key={a.id} className={i === 1 ? 'md:mt-20' : ''}>
                 <div data-reveal-img className="aspect-[4/5] overflow-hidden rounded-[6px]"><Img photo={a.photo} sizes="(min-width:768px) 30vw, 92vw" /></div>
-                <p data-reveal className="display mt-6 text-[2.6rem] leading-none text-ivory/40">{a.n}</p>
+                <p data-reveal className="display mt-6 text-[2.6rem] leading-none text-[#BFD6EC]">{a.n}</p>
                 <h3 data-reveal className="display mt-3 text-[clamp(1.8rem,2.6vw,2.4rem)] leading-[0.95]">{a.title}{a.sub && <span className="accent mt-1 block text-[0.7em] font-normal text-[#BFD6EC]">{a.sub}</span>}</h3>
                 <p data-reveal className="mt-4 text-[15.5px] leading-relaxed text-ivory/70">{a.text}</p>
                 <p data-reveal className="eyebrow mt-4 text-ivory/45">{a.initiatives.map((k) => initiatives[k].name).join(' · ')}</p>

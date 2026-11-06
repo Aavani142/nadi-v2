@@ -48,7 +48,7 @@ export default function SDGExperience() {
   const goal = SDGS[active]
 
   return (
-    <section id="sdgs" ref={ref} aria-label="Sustainable Development Goals" className="relative overflow-hidden bg-navy pb-24 pt-24 text-ivory sm:pt-32 lg:pb-32 lg:pt-36">
+    <section id="sdgs" ref={ref} aria-label="Sustainable Development Goals" className="relative overflow-hidden bg-white pb-24 pt-24 text-[#1C2634] sm:pt-32 lg:pb-32 lg:pt-36">
       {/* the 17 official goal colours as the section's opening band */}
       <div aria-hidden="true" className="absolute inset-x-0 top-0 flex h-2">
         {SDGS.map((g) => <span key={g.n} className="flex-1" style={{ background: g.color }} />)}
@@ -57,11 +57,11 @@ export default function SDGExperience() {
       <div className="frame relative">
         <div className="grid gap-8 lg:grid-cols-12">
           <div className="lg:col-span-7">
-            <Eyebrow tone="text-mustard">The Global Goals</Eyebrow>
+            <Eyebrow tone="text-accent">The Global Goals</Eyebrow>
             <Lines className="display mt-6 text-[clamp(2.8rem,6.2vw,6.2rem)] leading-[0.9]"
-              lines={['Local action.', <span key="a" className="accent text-mustard"><Doodled kind="underline" delay={0.9}>Global goals.</Doodled></span>]} />
+              lines={['Local action.', <span key="a" className="accent text-accent"><Doodled kind="underline" delay={0.9}>Global goals.</Doodled></span>]} />
           </div>
-          <p className="text-[16px] leading-relaxed text-ivory/70 lg:col-span-4 lg:col-start-9 lg:pt-8">
+          <p className="text-[16px] leading-relaxed text-[#1C2634]/70 lg:col-span-4 lg:col-start-9 lg:pt-8">
             The wheel turns through the {VERIFIED.length} goals NADI's initiatives work towards, as documented in NADI's pamphlet and Annual Report 2025–2026. All 17 United Nations goals remain open to explore: select any one.
           </p>
         </div>
@@ -72,12 +72,12 @@ export default function SDGExperience() {
             <SDGWheel active={active} onSelect={select} progress={progress} onInteract={onInteract} className="mx-auto w-full max-w-[440px] lg:max-w-[540px]" />
             {/* controls */}
             <div className="mx-auto mt-4 flex w-fit items-center gap-1.5 sm:mt-6 sm:gap-2">
-              <button type="button" aria-label="Previous goal" onClick={() => select((active - 1 + N) % N)} className="grid h-11 w-11 place-items-center rounded-full border border-white/20 hover:bg-white hover:text-navy"><ChevronLeft size={18} /></button>
+              <button type="button" aria-label="Previous goal" onClick={() => select((active - 1 + N) % N)} className="grid h-11 w-11 place-items-center rounded-full border border-[#09325A]/20 text-[#09325A] hover:bg-[#09325A] hover:text-white"><ChevronLeft size={18} /></button>
               <button type="button" aria-label={playing ? 'Pause automatic rotation' : 'Play automatic rotation'} onClick={() => setPlaying((p) => !p)}
                 className="inline-flex h-11 min-w-[44px] items-center justify-center gap-2 rounded-full border border-white/20 px-3 text-[13px] font-semibold hover:bg-white hover:text-navy sm:px-4">
                 {playing ? <Pause size={15} /> : <Play size={15} />}<span className="hidden sm:inline">{playing ? 'Pause' : 'Play'}</span>
               </button>
-              <button type="button" aria-label="Next goal" onClick={() => select((active + 1) % N)} className="grid h-11 w-11 place-items-center rounded-full border border-white/20 hover:bg-white hover:text-navy"><ChevronRight size={18} /></button>
+              <button type="button" aria-label="Next goal" onClick={() => select((active + 1) % N)} className="grid h-11 w-11 place-items-center rounded-full border border-[#09325A]/20 text-[#09325A] hover:bg-[#09325A] hover:text-white"><ChevronRight size={18} /></button>
             </div>
           </div>
 
@@ -96,7 +96,7 @@ export default function SDGExperience() {
               <button type="button" onClick={() => select(i)} aria-label={`Goal ${s.n}: ${s.name}`} aria-current={i === active ? 'true' : undefined}
                 className="group relative block h-12 w-full overflow-hidden rounded-[4px] text-[12px] font-bold text-white transition-transform sm:h-12 sm:text-[13px]"
                 style={{ background: s.color }}>
-                <span className={`absolute inset-0 bg-navy transition-opacity ${i === active ? 'opacity-0' : 'opacity-40 group-hover:opacity-10'}`} />
+                <span className={`absolute inset-0 bg-white transition-opacity ${i === active ? 'opacity-0' : 'opacity-20 group-hover:opacity-0'}`} />
                 <span className="relative">{s.n}</span>
                 {s.initiatives.length > 0 && <span className="absolute right-1 top-1 h-2 w-2 rounded-full bg-ivory ring-2 ring-navy/40" />}
                 {i === active && <motion.span layoutId="sdg-index" className="absolute inset-x-0 bottom-0 h-1 bg-white" />}
@@ -104,8 +104,8 @@ export default function SDGExperience() {
             </li>
           ))}
         </ol>
-        <p className="mt-4 flex items-center gap-2 text-[12.5px] text-ivory/70"><span aria-hidden="true" className="h-2.5 w-2.5 rounded-full bg-ivory ring-2 ring-white/30" /> Goals NADI's initiatives work towards — these are the ones the wheel turns through.</p>
-        <p className="mt-2 text-[12px] text-ivory/45">Official UN Sustainable Development Goal icons and colours. NADI mappings: pamphlet and Annual Report 2025–2026.</p>
+        <p className="mt-4 flex items-center gap-2 text-[12.5px] text-[#1C2634]/70"><span aria-hidden="true" className="h-2.5 w-2.5 rounded-full bg-[#09325A] ring-2 ring-[#09325A]/20" /> Goals NADI's initiatives work towards — these are the ones the wheel turns through.</p>
+        <p className="mt-2 text-[12px] text-[#1C2634]/60">Official UN Sustainable Development Goal icons and colours. NADI mappings: pamphlet and Annual Report 2025–2026.</p>
       </div>
     </section>
   )

@@ -62,7 +62,7 @@ export default function VisionMissionJourney() {
               <div aria-hidden="true" className="absolute inset-[-4%]">
                 <Img photo={c.photo} sizes="100vw" alt="" className="scale-110" />
               </div>
-              <div aria-hidden="true" className="absolute inset-0" style={{ background: 'linear-gradient(105deg, rgba(6,29,53,.94) 0%, rgba(6,29,53,.78) 45%, rgba(6,29,53,.35) 100%)' }} />
+              <div aria-hidden="true" className="absolute inset-0" style={{ background: 'linear-gradient(105deg, rgba(9,58,104,.94) 0%, rgba(9,58,104,.78) 45%, rgba(9,58,104,.35) 100%)' }} />
               <div className="frame relative flex h-full flex-col justify-center pb-16 pt-24">
                 <p className="vj-text eyebrow text-ivory/60">Our {c.label.toLowerCase()}</p>
                 <h3 className="vj-title mt-4 font-display text-[clamp(3.4rem,13vw,10rem)] font-extrabold uppercase leading-[0.9] tracking-[0.005em]" style={{ fontVariationSettings: "'wdth' 100" }}>

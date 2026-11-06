@@ -46,8 +46,8 @@ export default function SDGWheel({ active, onSelect, progress, onInteract, class
       onTouchStart={() => onInteract?.('touch')} onFocus={() => onInteract?.('focus')} onBlur={() => onInteract?.('leave')}>
       <svg viewBox="0 0 600 600" className="h-full w-full overflow-visible" role="group" aria-label="Sustainable Development Goals wheel. Use arrow keys to change goal." onKeyDown={onKey}>
         {/* auto-advance timer ring */}
-        <circle cx={C} cy={C} r={R_IN - 12} fill="none" stroke="rgba(246,240,227,.08)" strokeWidth="2" />
-        <motion.circle cx={C} cy={C} r={R_IN - 12} fill="none" stroke="#BFD6EC" strokeWidth="2.5" strokeLinecap="round"
+        <circle cx={C} cy={C} r={R_IN - 12} fill="none" stroke="rgba(9,50,90,.08)" strokeWidth="2" />
+        <motion.circle cx={C} cy={C} r={R_IN - 12} fill="none" stroke="#0468B1" strokeWidth="2.5" strokeLinecap="round"
           style={{ pathLength: progress, rotate: -90, transformOrigin: '300px 300px' }} />
 
         <motion.g style={{ rotate: rot, transformOrigin: '300px 300px' }}>
@@ -57,14 +57,14 @@ export default function SDGWheel({ active, onSelect, progress, onInteract, class
             const [dx, dy] = [Math.sin(rad(i * STEP)) * 14, -Math.cos(rad(i * STEP)) * 14]
             return (
               <motion.g key={s.n} role="button" tabIndex={0} aria-label={`Goal ${s.n}: ${s.name}`} aria-pressed={on}
-                className="cursor-pointer outline-none [&:focus-visible>path]:stroke-ivory [&:focus-visible>path]:[stroke-width:3]"
+                className="cursor-pointer outline-none [&:focus-visible>path]:stroke-[#09325A] [&:focus-visible>path]:[stroke-width:3]"
                 onClick={() => onSelect(i)} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onSelect(i) } }}
                 animate={{ x: on ? dx : 0, y: on ? dy : 0, opacity: on ? 1 : 0.55 }}
                 whileHover={{ opacity: 1 }} transition={{ type: 'spring', stiffness: 220, damping: 22 }}>
                 <path d={sector(i)} fill={s.color} />
                 {s.initiatives.length > 0 && (() => {
                   const [sx, sy] = polar(R_OUT - 16, i * STEP + STEP / 2 - 5)
-                  return <circle cx={sx} cy={sy} r="5" fill="#F7F6F2" className="pointer-events-none" />
+                  return <circle cx={sx} cy={sy} r="5" fill="#FFFFFF" stroke="#09325A" strokeOpacity=".35" className="pointer-events-none" />
                 })()}
                 <motion.text x={lx} y={ly} textAnchor="middle" dominantBaseline="central"
                   className="pointer-events-none select-none fill-white font-display font-extrabold"
@@ -77,7 +77,7 @@ export default function SDGWheel({ active, onSelect, progress, onInteract, class
         </motion.g>
 
         {/* centre: the official icon of the active goal */}
-        <circle cx={C} cy={C} r={R_IN - 22} fill="#0A1D31" />
+        <circle cx={C} cy={C} r={R_IN - 22} fill="#F3F6FA" />
         <AnimatePresence mode="popLayout" initial={false}>
           <motion.g key={g.n} initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.9 }}
             transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }} style={{ transformOrigin: '300px 300px' }}>

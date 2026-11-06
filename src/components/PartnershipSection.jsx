@@ -48,7 +48,7 @@ export default function PartnershipSection() {
 
         {/* Engagement frameworks [pamphlet] */}
         <div ref={listRef} onMouseMove={fine ? move : undefined} onMouseLeave={() => setHover(null)} className="relative mt-20 lg:mt-28">
-          <p className="eyebrow mb-4 text-ivory/60">Engagement frameworks</p>
+          <p className="eyebrow mb-4 text-ivory/80">Engagement frameworks</p>
           <ul className="border-t border-white/20">
             {frameworks.map((f, k) => (
               <li key={f.k} onMouseEnter={() => setHover(k)} className="border-b border-white/20">
@@ -88,7 +88,7 @@ export default function PartnershipSection() {
           )}
         </div>
 
-        <p className="mt-10 flex flex-wrap gap-x-6 gap-y-2 text-[12.5px] text-ivory/60">
+        <p className="mt-10 flex flex-wrap gap-x-6 gap-y-2 text-[12.5px] text-ivory/80">
           <span>12A &amp; 80G certified NGO</span>
           <span>ISO 9001:2015 certified</span>
           <span>Reg. No. TVM/TC/668/2022</span>

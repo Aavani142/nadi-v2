@@ -351,9 +351,9 @@ export const contact = {
 const mail = (subject, body) => `mailto:${contact.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
 export const ctas = {
   contact: { label: 'Get in Touch', href: `mailto:${'nadifoundationkerala@gmail.com'}?subject=${encodeURIComponent('Hello NADI Foundation')}` },
-  volunteer: { label: 'Volunteer', href: mail('Volunteer enquiry — NADI Foundation', 'Hello NADI team,\n\nI would like to volunteer with NADI Foundation.\n\nName:\nPhone:\nCollege / organisation (if any):\nAreas of interest:\n') },
-  partner: { label: 'Collaborate', href: mail('Partnership enquiry — NADI Foundation', 'Hello NADI team,\n\nWe would like to explore a partnership with NADI Foundation.\n\nOrganisation:\nType (CSR / academic / community):\nContact person:\nPhone:\n') },
-  support: { label: 'Support NADI', href: mail('Supporting NADI Foundation', 'Hello NADI team,\n\nI would like to support NADI Foundation\'s work. Please share how I can contribute.\n\nName:\nPhone:\n') },
+  volunteer: { label: 'Volunteer', href: mail('Volunteer enquiry — NADI Foundation', 'Hello NADI team,\n\nI would like to volunteer with NADI Foundation.\n\nName:\nPhone number (required):\nCollege / organisation (if any):\nAreas of interest:\n') },
+  partner: { label: 'Collaborate', href: mail('Partnership enquiry — NADI Foundation', 'Hello NADI team,\n\nWe would like to explore a partnership with NADI Foundation.\n\nOrganisation:\nType (CSR / academic / community):\nContact person:\nPhone number (required):\n') },
+  support: { label: 'Support NADI', href: mail('Supporting NADI Foundation', 'Hello NADI team,\n\nI would like to support NADI Foundation\'s work. Please share how I can contribute.\n\nName:\nPhone number (required):\n') },
 }
 
 // [PM] "Engagement frameworks"

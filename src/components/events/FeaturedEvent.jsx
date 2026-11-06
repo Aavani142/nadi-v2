@@ -9,7 +9,7 @@ export function DateSticker({ event, size = 'lg', className = '' }) {
   const p = dateParts(event.date)
   const dims = size === 'lg' ? 'h-28 w-28 sm:h-32 sm:w-32' : 'h-20 w-20'
   return (
-    <div className={`ev-date grid place-items-center rounded-full bg-navy-deep text-center text-ivory shadow-[0_18px_40px_-16px_rgba(6,29,53,.6)] ${dims} ${className}`}>
+    <div className={`ev-date grid place-items-center rounded-full bg-navy-deep text-center text-ivory shadow-[0_18px_40px_-16px_rgba(9,58,104,.6)] ${dims} ${className}`}>
       {p ? (
         <div className="leading-none">
           <span className={`display block tabular-nums ${size === 'lg' ? 'text-[2.9rem]' : 'text-[1.9rem]'}`}>{p.day}</span>

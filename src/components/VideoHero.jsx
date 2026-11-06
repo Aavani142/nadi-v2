@@ -102,9 +102,9 @@ export default function VideoHero() {
         </div>
       </div>
       {/* legibility washes */}
-      <div aria-hidden="true" className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(6,29,53,.9) 0%, rgba(6,29,53,.5) 34%, rgba(6,29,53,0) 60%, rgba(6,29,53,0) 80%, rgba(6,29,53,.5) 100%)' }} />
-      <div aria-hidden="true" className="absolute inset-0 hidden xl:block" style={{ background: 'linear-gradient(to right, rgba(6,29,53,.3), transparent 50%)' }} />
-      <div aria-hidden="true" className="absolute inset-0 xl:hidden" style={{ background: 'linear-gradient(to top, rgba(6,29,53,.95) 0%, rgba(6,29,53,.82) 48%, rgba(6,29,53,.35) 74%, rgba(6,29,53,.5) 100%)' }} />
+      <div aria-hidden="true" className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(7,48,88,.92) 0%, rgba(7,48,88,.62) 36%, rgba(7,48,88,0) 64%, rgba(7,48,88,0) 82%, rgba(7,48,88,.45) 100%)' }} />
+      <div aria-hidden="true" className="absolute inset-0 hidden xl:block" style={{ background: 'linear-gradient(to right, rgba(7,48,88,.3), transparent 45%, transparent 55%, rgba(7,48,88,.55) 100%)' }} />
+      <div aria-hidden="true" className="absolute inset-0 xl:hidden" style={{ background: 'linear-gradient(to top, rgba(7,48,88,.95) 0%, rgba(7,48,88,.82) 48%, rgba(7,48,88,.32) 74%, rgba(7,48,88,.45) 100%)' }} />
       <div aria-hidden="true" className="h-shade absolute inset-0 bg-navy-deep opacity-0" />
 
       {/* identity */}

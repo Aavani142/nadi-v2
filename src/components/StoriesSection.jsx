@@ -37,7 +37,7 @@ function Press() {
         <ul className="mt-4 flex flex-wrap gap-x-3 gap-y-1 accent text-[clamp(1.8rem,3.2vw,2.8rem)] leading-[1.1] text-accent">
           {press.outlets.map((o, k) => <li key={o}>{o}{k < press.outlets.length - 1 && <span className="not-italic text-fg/25"> /</span>}</li>)}
         </ul>
-        <p className="mt-6 text-[12.5px] text-fg/45">Clippings reproduced from the Annual Report 2025–2026.</p>
+        <p className="mt-6 text-[12.5px] text-fg/60">Clippings reproduced from the Annual Report 2025–2026.</p>
       </div>
       <div className="relative h-[110vw] max-h-[560px] lg:col-span-6 lg:col-start-7 lg:h-[560px]">
         {press.clippings.map((c, k) => (
@@ -99,7 +99,7 @@ function Social() {
             </Reveal>
           ))}
         </ol>
-        <p className="mt-4 text-[12.5px] text-fg/45">Opens the original post on Instagram.</p>
+        <p className="mt-4 text-[12.5px] text-fg/60">Opens the original post on Instagram.</p>
       </div>
     </div>
   )

@@ -142,7 +142,7 @@ function YouthForAction({ i }) {
     { photo: photos.communityVisit, c: 'col-span-3 row-span-3' },
   ]
   return (
-    <div className="relative h-full overflow-hidden bg-[#0A2D50] text-white">
+    <div className="relative h-full overflow-hidden bg-[#10589A] text-white">
       <div className="relative grid h-full gap-10 px-5 py-12 sm:px-10 lg:grid-cols-12 lg:gap-10 lg:px-12 lg:py-14">
         <div className="flex flex-col lg:col-span-5">
           <Index i={i} theme={p.theme} className="text-[#9CC0E4]" />
