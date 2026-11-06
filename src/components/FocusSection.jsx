@@ -1,70 +1,69 @@
-import { useRef } from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
 import { ArrowDownRight } from 'lucide-react'
-import { focusAreas, initiatives, photos } from '../data/nadi.js'
-import { gsap, revealIn, useGsap } from '../lib/gsap.js'
-import { Img } from './ui.jsx'
+import { focusAreas, initiatives } from '../data/nadi.js'
+import { gsap, revealIn, useGsap, reducedMotion, ScrollTrigger } from '../lib/gsap.js'
+import { scrollToY } from '../lib/SmoothScroll.jsx'
 import { scrollToInitiative, INITIATIVE_IDS } from './InitiativesSection.jsx'
-import { Doodled, Doodle } from './Doodle.jsx'
+import { Doodled } from './Doodle.jsx'
+import { BreathMotif, PathMotif, GatherMotif } from './FocusMotifs.jsx'
 
-/** Muted, area-specific accents — used only on the number and rule, never as a ground. */
+/**
+ * THREE CORE AREAS — one pinned stage. Scrolling moves through the areas; each brings its own ground
+ * colour, its own living motif (breath · learning path · gathering) and its own photograph.
+ * The same experience on phones, tablets and desktop; tabs jump straight to an area.
+ * Reduced motion: the three areas are simply listed.
+ */
 const LOOK = {
-  'mental-health': { tone: '#B0674F', second: photos.kappinessGarden, secondCaption: 'Kappiness, Vazhuthacaud', layout: 'a' },
-  education: { tone: '#3F6E55', second: photos.prabodhiniClass, secondCaption: 'A Prabodhini classroom', layout: 'b' },
-  community: { tone: '#0468B1', second: photos.hivDay, secondCaption: 'An HIV/AIDS awareness campaign', layout: 'c' },
+  'mental-health': { ground: '#1E1735', accent: '#FFA584', Motif: BreathMotif },
+  education: { ground: '#0E2A24', accent: '#8FE3B0', Motif: PathMotif },
+  community: { ground: '#0A2340', accent: '#7CC0F2', Motif: GatherMotif },
+}
+const N = focusAreas.length
+
+function Chars({ text }) {
+  return text.split(' ').map((w, i) => (
+    <span key={i} className="inline-block overflow-hidden pb-[0.06em] align-top">
+      <span className="fc-char inline-block">{w}&nbsp;</span>
+    </span>
+  ))
 }
 
-function Area({ area }) {
-  const look = LOOK[area.id]
-  const flip = look.layout === 'b'
-  const main = {
-    a: 'aspect-[4/3] md:aspect-[4/5] md:col-span-6 lg:aspect-[16/11] lg:col-span-7',
-    b: 'aspect-[4/3] md:aspect-[4/5] md:col-span-6 md:col-start-7 md:row-start-1 lg:col-span-5 lg:col-start-8',
-    c: 'aspect-[4/3] md:aspect-[4/5] md:col-span-6 lg:aspect-[16/9] lg:col-span-8',
-  }[look.layout]
-  const text = {
-    a: 'md:col-span-6 md:col-start-7 lg:col-span-4 lg:col-start-9',
-    b: 'md:col-span-6 md:col-start-1 md:row-start-1 lg:col-span-5',
-    c: 'md:col-span-6 md:col-start-7 lg:col-span-3 lg:col-start-10',
-  }[look.layout]
-
+function Chapter({ area, active, index }) {
+  const { accent, Motif } = LOOK[area.id]
   return (
-    <article id={`focus-${area.id}`} className="grid items-end gap-12 md:grid-cols-12 md:gap-8">
-      <figure className={`relative ${main}`}>
-        <div data-reveal-img={flip ? 'left' : undefined} className="relative h-full w-full overflow-hidden rounded-[6px]">
-          <Img photo={area.photo} sizes="(min-width:1024px) 55vw, 92vw" />
-        </div>
-        {/* second photograph, offset and drifting against the scroll */}
-        <div data-parallax="40"
-          className={`absolute bottom-[-8%] w-[34%] ${flip ? 'left-3 lg:-left-[12%]' : 'right-3 md:-right-[6%]'}`}>
-          <div className="overflow-hidden rounded-[4px] border-[6px] border-page shadow-[0_24px_50px_-28px_rgba(6,29,53,.5)]">
-            <div className="aspect-[4/5]"><Img photo={look.second} sizes="(min-width:1024px) 18vw, 32vw" /></div>
-          </div>
-        </div>
-        <figcaption className={`mt-4 text-[12.5px] text-fg/55 ${flip ? 'lg:text-right' : ''}`}>{area.caption}</figcaption>
-      </figure>
+    <article
+      aria-hidden={!active}
+      className="fc-chapter absolute inset-0 grid grid-rows-[auto_1fr] content-center gap-5 sm:gap-8 lg:grid-cols-12 lg:grid-rows-1 lg:items-center lg:gap-10"
+      style={{ visibility: index === 0 ? 'visible' : 'hidden' }}
+    >
+      {/* motif: top on phones, right on desktop */}
+      <div className="fc-motif mx-auto w-[min(68vw,29svh)] sm:w-[min(48vw,32svh)] lg:order-2 lg:col-span-6 lg:w-[min(38vw,54svh)]">
+        <Motif photo={area.photo} color={accent} active={active} />
+      </div>
 
-      <div className={text}>
-        <div data-reveal className="flex items-baseline gap-4">
-          <span className="display text-[clamp(3rem,5vw,4.4rem)] leading-none" style={{ color: look.tone }}>{area.n}</span>
-          <span className="h-px flex-1" style={{ background: look.tone, opacity: 0.4 }} />
+      <div className="lg:order-1 lg:col-span-6">
+        <div className="flex items-baseline gap-4">
+          <span className="fc-num display text-[clamp(2.4rem,8vw,4.6rem)] leading-none" style={{ color: accent }}>{area.n}</span>
+          <span className="fc-rule h-px flex-1 origin-left" style={{ background: accent, opacity: 0.45 }} />
         </div>
-        <div data-reveal-lines className="mt-5">
-          <h3 className="display text-[clamp(2.4rem,4vw,3.6rem)] leading-[0.92] text-heading">
-            <span className="block overflow-hidden pb-[0.06em]"><span data-line className="block">{area.title}</span></span>
-            {area.sub && <span className="block overflow-hidden"><span data-line className="accent block text-[0.62em] text-fg/70">{area.sub}</span></span>}
-          </h3>
-        </div>
-        <p data-reveal className="mt-5 text-[16px] leading-relaxed text-fg/75">{area.text}</p>
-        <ul data-reveal className="eyebrow mt-5 flex flex-wrap gap-x-3 gap-y-1 text-fg/55">
-          {area.keywords.map((k, i) => <li key={k}>{k}{i < area.keywords.length - 1 && <span aria-hidden="true" className="ml-3">·</span>}</li>)}
+        <h3 className="display mt-2 text-[clamp(2rem,8.6vw,5.2rem)] leading-[0.92] text-white sm:mt-3">
+          <Chars text={area.title} />
+          {area.sub && <span className="fc-fade accent mt-1 block text-[0.5em] font-normal" style={{ color: accent }}>{area.sub}</span>}
+        </h3>
+        <p className="fc-fade mt-3 max-w-xl text-[14.5px] leading-relaxed text-white/75 sm:mt-4 sm:text-[16.5px] [@media(max-height:700px)]:line-clamp-3">{area.text}</p>
+        <ul className="fc-fade mt-4 hidden flex-wrap gap-2 sm:flex [@media(max-height:760px)]:hidden" aria-label="Focus">
+          {area.keywords.map((k) => (
+            <li key={k} className="rounded-full border px-3 py-1 font-mono text-[10.5px] uppercase tracking-[0.14em]" style={{ borderColor: `${accent}66`, color: accent }}>{k}</li>
+          ))}
         </ul>
-        <ul data-reveal className="mt-7 border-t border-fg/10">
+        <ul className="fc-fade mt-4 flex flex-wrap gap-2 sm:mt-5" aria-label="Initiatives in this area">
           {area.initiatives.map((key) => (
-            <li key={key} className="border-b border-fg/10">
-              <a href={`#work-${INITIATIVE_IDS[key]}`} onClick={(e) => { e.preventDefault(); scrollToInitiative(INITIATIVE_IDS[key]) }}
-                className="group flex min-h-[48px] items-center justify-between py-3 text-[15px] font-semibold text-heading">
-                <span className="transition-transform duration-500 ease-out group-hover:translate-x-1.5">{initiatives[key].name}</span>
-                <ArrowDownRight size={16} className="text-fg/35 transition-colors group-hover:text-accent" />
+            <li key={key}>
+              <a href={`#work-${INITIATIVE_IDS[key]}`} tabIndex={active ? 0 : -1}
+                onClick={(e) => { e.preventDefault(); scrollToInitiative(INITIATIVE_IDS[key]) }}
+                className="group inline-flex min-h-[44px] items-center gap-1.5 rounded-full bg-white/10 px-3.5 text-[13.5px] font-semibold sm:gap-2 sm:px-4 sm:text-[14px] text-white transition-colors hover:bg-white hover:text-navy-deep active:scale-[0.97]">
+                {initiatives[key].name}
+                <ArrowDownRight size={15} className="transition-transform group-hover:translate-x-0.5 group-hover:translate-y-0.5" />
               </a>
             </li>
           ))}
@@ -74,17 +73,96 @@ function Area({ area }) {
   )
 }
 
+/** Reduced motion: the same content, listed and static. */
+function StaticList() {
+  return (
+    <div className="grid gap-px">
+      {focusAreas.map((a) => {
+        const { ground, accent, Motif } = LOOK[a.id]
+        return (
+          <div key={a.id} className="py-16" style={{ background: ground }}>
+            <div className="frame grid items-center gap-10 lg:grid-cols-2">
+              <div className="mx-auto w-[min(72vw,380px)]"><Motif photo={a.photo} color={accent} active={false} /></div>
+              <div>
+                <p className="display text-5xl" style={{ color: accent }}>{a.n}</p>
+                <h3 className="display mt-2 text-[clamp(2.1rem,6vw,4.4rem)] leading-[0.95] text-white">{a.title}</h3>
+                <p className="mt-4 max-w-xl text-[16px] leading-relaxed text-white/75">{a.text}</p>
+                <p className="mt-4 text-[14px] font-semibold text-white">{a.initiatives.map((k) => initiatives[k].name).join(' · ')}</p>
+              </div>
+            </div>
+          </div>
+        )
+      })}
+    </div>
+  )
+}
+
 export default function FocusSection() {
   const ref = useRef(null)
+  const stage = useRef(null)
+  const st = useRef(null)
+  const [reduce] = useState(() => reducedMotion())
+  const [active, setActive] = useState(0)
+  const prev = useRef(0)
+
+  // section intro
   useGsap(ref, () => {
     gsap.from('.focus-line', { yPercent: 110, duration: 1.3, stagger: 0.1, scrollTrigger: { trigger: '.focus-head', start: 'top 80%', once: true } })
-    revealIn(ref.current)
+    revealIn(ref.current.querySelector('.focus-head'))
   })
 
+  // the pinned stage
+  useGsap(stage, () => {
+    st.current = ScrollTrigger.create({
+      trigger: stage.current, start: 'top top', end: () => `+=${window.innerHeight * (N - 1) * 0.9}`,
+      pin: true, anticipatePin: 1, invalidateOnRefresh: true,
+      snap: { snapTo: 1 / (N - 1), duration: { min: 0.2, max: 0.5 }, ease: 'power2.inOut', delay: 0.05 },
+      onUpdate: (self) => {
+        const i = Math.round(self.progress * (N - 1))
+        setActive((a) => (a === i ? a : i))
+        const bar = stage.current?.querySelector('.fc-progress')
+        if (bar) bar.style.transform = `scaleX(${(self.progress * (N - 1) + 1) / N})`
+      },
+    })
+    // first chapter's entrance as the stage arrives
+    gsap.from(stage.current.querySelectorAll('.fc-chapter')[0].querySelectorAll('.fc-char'), {
+      yPercent: 110, duration: 1, stagger: 0.05, ease: 'expo.out',
+      scrollTrigger: { trigger: stage.current, start: 'top 60%', once: true },
+    })
+  })
+
+  // chapter change: ground shifts colour, outgoing steps back, incoming builds itself
+  useLayoutEffect(() => {
+    if (reduce || !stage.current || prev.current === active) return
+    const chapters = stage.current.querySelectorAll('.fc-chapter')
+    const out = chapters[prev.current], inc = chapters[active]
+    const dir = active > prev.current ? 1 : -1
+    prev.current = active
+    const ctx = gsap.context(() => {
+      gsap.to(stage.current, { backgroundColor: LOOK[focusAreas[active].id].ground, duration: 0.8, ease: 'power2.out' })
+      gsap.killTweensOf([out, inc])
+      gsap.to(out, { autoAlpha: 0, y: -30 * dir, duration: 0.45, ease: 'power2.in' })
+      gsap.set(inc, { autoAlpha: 1, y: 0 })
+      gsap.timeline()
+        .fromTo(inc.querySelector('.fc-motif'), { scale: 0.85, opacity: 0, rotate: -6 * dir }, { scale: 1, opacity: 1, rotate: 0, duration: 1.1, ease: 'expo.out' }, 0.15)
+        .fromTo(inc.querySelector('.fc-num'), { yPercent: 60, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 0.8, ease: 'expo.out' }, 0.2)
+        .fromTo(inc.querySelector('.fc-rule'), { scaleX: 0 }, { scaleX: 1, duration: 0.9, ease: 'expo.inOut' }, 0.2)
+        .fromTo(inc.querySelectorAll('.fc-char'), { yPercent: 110 }, { yPercent: 0, duration: 0.9, stagger: 0.05, ease: 'expo.out' }, 0.25)
+        .fromTo(inc.querySelectorAll('.fc-fade'), { y: 18, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, stagger: 0.07, ease: 'expo.out' }, 0.45)
+    }, stage)
+    return () => ctx.kill() // let the tweens finish visually if state changes again; no revert (would undo visibility)
+  }, [active, reduce])
+
+  const jump = (i) => {
+    const s = st.current
+    if (!s) return
+    scrollToY(s.start + ((s.end - s.start) * i) / (N - 1) + 2)
+  }
+
   return (
-    <section id="focus" ref={ref} aria-labelledby="focus-title" className="g-ivory relative overflow-hidden pb-32 pt-24 sm:pt-32 lg:pb-44 lg:pt-40">
-      <div className="frame">
-        <div className="focus-head grid gap-10 lg:grid-cols-12 lg:items-end">
+    <section id="focus" ref={ref} aria-labelledby="focus-title" className="relative">
+      <div className="g-ivory">
+        <div className="focus-head frame grid gap-8 pb-16 pt-24 sm:pb-20 sm:pt-32 lg:grid-cols-12 lg:items-end lg:pb-24 lg:pt-40">
           <div className="lg:col-span-8">
             <p className="eyebrow flex items-center gap-3 text-accent"><span aria-hidden="true" className="h-px w-8 bg-current" />Our three core areas</p>
             <h2 id="focus-title" className="display mt-6 text-[clamp(2.9rem,7vw,7.2rem)] leading-[0.9] text-heading">
@@ -96,11 +174,35 @@ export default function FocusSection() {
             NADI Foundation works towards meaningful social transformation through mental health, education and community development.
           </p>
         </div>
-
-        <div className="mt-16 grid gap-24 sm:mt-24 md:gap-32 lg:mt-36 lg:gap-44">
-          {focusAreas.map((a) => <Area key={a.id} area={a} />)}
-        </div>
       </div>
+
+      {reduce ? <StaticList /> : (
+        <div ref={stage} className="relative h-[100svh] min-h-[600px] overflow-hidden text-white" style={{ background: LOOK[focusAreas[0].id].ground }}>
+          {/* fine grain + a soft vignette so the colour fields feel like light, not flat fills */}
+          <div aria-hidden="true" className="pointer-events-none absolute inset-0" style={{ background: 'radial-gradient(70% 60% at 70% 45%, rgba(255,255,255,.06), transparent 70%)' }} />
+
+          <div className="frame relative flex h-full flex-col pb-5 pt-[72px] sm:pt-24">
+            {/* tabs — tap to jump; the bar tracks progress */}
+            <div className="shrink-0">
+              <div role="tablist" aria-label="Core areas" className="grid grid-cols-3 gap-2">
+                {focusAreas.map((a, i) => (
+                  <button key={a.id} role="tab" type="button" aria-selected={active === i} onClick={() => jump(i)}
+                    className={`min-h-[44px] text-left font-mono text-[10.5px] uppercase leading-tight tracking-[0.12em] transition-colors sm:text-[11.5px] ${active === i ? 'text-white' : 'text-white/45 hover:text-white/80'}`}>
+                    <span className="tabular-nums">{a.n}</span> <span className="hidden sm:inline">· </span><br className="sm:hidden" />{a.title}
+                  </button>
+                ))}
+              </div>
+              <div className="mt-1 h-[2px] w-full bg-white/15">
+                <div className="fc-progress h-full origin-left transition-colors duration-500" style={{ transform: `scaleX(${1 / N})`, background: LOOK[focusAreas[active].id].accent }} />
+              </div>
+            </div>
+
+            <div className="relative mt-4 flex-1 sm:mt-6">
+              {focusAreas.map((a, i) => <Chapter key={a.id} area={a} index={i} active={active === i} />)}
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   )
 }

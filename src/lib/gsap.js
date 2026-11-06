@@ -11,6 +11,8 @@ gsap.defaults({ ease: 'expo.out', duration: 1.2 })
 
 export { gsap, ScrollTrigger, SplitText }
 
+if (typeof document !== 'undefined' && document.fonts?.ready) document.fonts.ready.then(() => ScrollTrigger.refresh())
+
 export const reducedMotion = () =>
   typeof window !== 'undefined' && !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
 
