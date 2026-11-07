@@ -211,3 +211,16 @@ main section:not(#top):not(#work) :is(article, li, div, a, button):is([class*='r
 
 /* sections are their own stacking context, so their paper backdrops (-z-10) sit above the ground, below content */
 main > section { isolation: isolate; }
+
+/* phone landing kites: a slow swing about the bridle (the string stays attached) */
+.ps-kite { animation: ps-kite 5.5s ease-in-out infinite; }
+.ps-kite + .rs-strings, .ps-kite ~ .ps-kite { animation-delay: -2.2s; }
+@keyframes ps-kite { 0%, 100% { transform: rotate(-5deg) } 50% { transform: rotate(6deg) } }
+.nh.is-off .ps-kite { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) { .ps-kite { animation: none; } }
+
+/* phone landing: the sun's reflection shimmering on the river */
+.ps-glint { transform-box: fill-box; transform-origin: center; animation: ps-glint 2.6s ease-in-out infinite; }
+@keyframes ps-glint { 0%, 100% { opacity: .35; transform: scaleX(.7) } 50% { opacity: .9; transform: scaleX(1.08) } }
+.nh.is-off .ps-glint { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) { .ps-glint { animation: none; opacity: .7; } }

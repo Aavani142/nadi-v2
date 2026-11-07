@@ -13,21 +13,20 @@ import { createContext, useContext } from 'react'
 
 export const VB = '0 0 1600 900'
 const AR = 'xMaxYMax slice'
-// Portrait screens (phones, upright tablets) frame the right of the scene — the kite flyers, the sun and
-// the hills — a little wider and taller, so the people are a good size and nobody is cut off.
-const VB_PORTRAIT = '1100 -60 500 960'
-const AR_PORTRAIT = 'xMidYMax slice'
+// Portrait screens (phones, upright tablets) show the whole scene, exactly as on desktop, fitted to the
+// width along the bottom; the dusk sky simply continues upward behind the name.
+const AR_PORTRAIT = 'xMidYMax meet'
 /** true on portrait screens; NadiHero provides it */
 export const Portrait = createContext(false)
 
 // ── palette: dusk over the backwaters, people in festival colour ─────────────
-const P = {
+export const P = {
   hillFar: '#7480A0', hillFar2: '#5E6C8E', land: '#4E6B5A', land2: '#41604F', palm: '#2C4838', palm2: '#3A5A45', trunk: '#4A3628',
   bank: '#7D7A3F', bank2: '#5D6131', grass: '#4B5724', grass2: '#6E7A34',
   coral: '#F2643D', saffron: '#F6A623', teal: '#14A39A', magenta: '#D6336C', indigo: '#4C5FD5', leaf: '#3BAA5C',
   mustard: '#E8B931', denim: '#2F4A73', charcoal: '#2B2B33', cream: '#F3E9DA', ink: '#1E1612', plum: '#7B3FA0',
 }
-const SKIN = ['#8D5524', '#A0673A', '#C68642', '#7A4A2A', '#B97A4F']
+export const SKIN = ['#8D5524', '#A0673A', '#C68642', '#7A4A2A', '#B97A4F']
 
 /** Shared defs — the paper filter and gradients — rendered once, referenced by every layer. */
 export function SceneDefs() {
@@ -89,17 +88,19 @@ export function SceneDefs() {
 
 const Layer = ({ children, className = '' }) => {
   const portrait = useContext(Portrait)
-  return <svg viewBox={portrait ? VB_PORTRAIT : VB} preserveAspectRatio={portrait ? AR_PORTRAIT : AR} className={`absolute inset-0 h-full w-full ${className}`} aria-hidden="true">{children}</svg>
+  return <svg viewBox={VB} preserveAspectRatio={portrait ? AR_PORTRAIT : AR} className={`absolute inset-0 h-full w-full ${className}`} aria-hidden="true">{children}</svg>
 }
 
 // ── sky ──────────────────────────────────────────────────────────────────────
 export function Sky() {
+  const portrait = useContext(Portrait)
   const cloud = (x, y, w, c, o) => (
     <path d={`M${x} ${y} C${x + w * 0.1} ${y - 22} ${x + w * 0.3} ${y - 26} ${x + w * 0.42} ${y - 12} C${x + w * 0.55} ${y - 34} ${x + w * 0.8} ${y - 28} ${x + w * 0.86} ${y - 8} C${x + w * 0.95} ${y - 10} ${x + w} ${y - 4} ${x + w} ${y} Z`} fill={c} opacity={o} />
   )
   return (
     <Layer>
-      <rect y="-400" width="1600" height="1300" fill="url(#rs-sky)" />
+      {/* portrait: the sky reaches far above the scene, the same gradient spread over the taller frame */}
+      {portrait ? <rect x="-400" y="-2600" width="2400" height="3500" fill="url(#rs-sky)" /> : <rect y="-400" width="1600" height="1300" fill="url(#rs-sky)" />}
       <circle cx="1240" cy="560" r="300" fill="url(#rs-glow)" />
       <g filter="url(#rs-paper)">
         <circle className="rs-sun" cx="1240" cy="560" r="92" fill="url(#rs-sun)" />
@@ -128,7 +129,7 @@ export function FarHills() {
 }
 
 // ── banks with palms ─────────────────────────────────────────────────────────
-function Palm({ x, y, h, lean = 0.25, s = 1, c = P.palm }) {
+export function Palm({ x, y, h, lean = 0.25, s = 1, c = P.palm }) {
   const tx = x + h * lean, ty = y - h
   const leaves = [-170, -140, -112, -80, -52, -22, 6].map((a, i) => {
     const r = (a * Math.PI) / 180, L = (58 + (i % 3) * 10) * s
@@ -222,7 +223,7 @@ export function handOf({ x, y, s = 1, face = 1, sit, arm }) {
 /**
  * A small paper figure seen from a distance, facing +x (face -1 mirrors). Feet at (x, y), ~100 units tall.
  */
-function Fig({ x, y, s = 1, face = 1, skin = SKIN[1], hair = 'short', hairC = P.ink, top, bottom = P.denim, kurta, sit, kid, arm = [10, 8], back = [-8, 0], hold }) {
+export function Fig({ x, y, s = 1, face = 1, skin = SKIN[1], hair = 'short', hairC = P.ink, top, bottom = P.denim, kurta, sit, kid, arm = [10, 8], back = [-8, 0], hold }) {
   const lift = sit ? 26 : 0
   const hr = kid ? 9.5 : 8.2
   const hd = [2, -96 + lift]
@@ -334,6 +335,7 @@ export function NearBank() {
  * Kite motion: each kite drifts and tilts on its own slow beat; its tail waves; its string re-hangs
  * from the flyer's hand. Call with t (seconds); `still` draws the resting pose.
  */
+// minX — landscape: kites stay right of this scene x. Portrait: kites stay below this scene y (the name).
 export function driveKites(root, t, still = false, portrait = false, minX = 0) {
   // landscape: keep the kites in clear sky right of the title — spread them over [lo, hi] when the title
   // reaches further across (narrower laptops), keeping their order and spacing
@@ -348,7 +350,9 @@ export function driveKites(root, t, still = false, portrait = false, minX = 0) {
     const rot = still ? -8 : -8 + Math.sin(t * 0.9 + ph) * 7
     if (portrait && !k.p) { g.style.display = str.style.display = 'none'; return }
     g.style.display = str.style.display = ''
-    const [bx0, by0, size, pf] = portrait ? k.p : [spread(k.x), k.y, k.size, k.flyer]
+    const [bx0, py, size, pf] = portrait ? k.p : [spread(k.x), k.y, k.size, k.flyer]
+    // portrait: the kite's top point clears the name, but it never sinks below its flyer's reach
+    const by0 = portrait ? Math.min(Math.max(py, minX + size + 18), handOf(FLYERS[pf])[1] - size * 1.25) : py
     const sc = size / k.size // kites are drawn at k.size; portrait ones are scaled
     const x = bx0 + dx, y = by0 + dy
     g.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${rot.toFixed(2)}) scale(${sc.toFixed(3)})`)

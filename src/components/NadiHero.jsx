@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useRevealed, prefersReducedMotion, useMedia } from '../lib/intro.js'
 import { gsap, useGsap } from '../lib/gsap.js'
 import { SceneDefs, Sky, FarHills, Banks, River, NearBank, driveKites, GRAIN, Portrait } from './hero/RiverScene.jsx'
+import { PhoneSky, PhoneHills, PhoneLand, PhoneRiver, PhoneNear } from './hero/PhoneScene.jsx'
 
 /**
  * Landing: a cut-paper Kerala backwater at golden hour — hills, palms, the river (nadi), and NADI's
@@ -21,8 +22,8 @@ const DEPTH = [6, 10, 16, 20, 30] // pointer travel (px) per layer, far → near
 function LandWords({ className = '' }) {
   return (
     <p className={`pointer-events-none absolute whitespace-nowrap ${className}`}>
-      <span className="block font-serif text-[clamp(14px,1.45vw,23px)] font-light italic leading-tight text-[#F6EADA]/70">a river of change, shaped by young people</span>
-      <span className="mt-1.5 block font-mono text-[clamp(8.5px,0.72vw,11px)] uppercase tracking-[0.2em] text-[#F6EADA]/45">Thiruvananthapuram · Kerala<span className="max-xl:hidden"> · since 2022</span></span>
+      <span className="block font-serif text-[clamp(9.5px,1.45vw,23px)] font-light italic leading-tight text-[#F6EADA]/70">a river of change, shaped by young people</span>
+      <span className="mt-1.5 block font-mono text-[clamp(6.5px,0.72vw,11px)] max-sm:hidden uppercase tracking-[0.2em] text-[#F6EADA]/45">Thiruvananthapuram · Kerala<span className="max-xl:hidden"> · since 2022</span></span>
     </p>
   )
 }
@@ -32,6 +33,7 @@ export default function NadiHero() {
   const ref = useRef(null)
   const title = useRef(null)
   const kiteMin = useRef(0)
+  const kiteTop = useRef(-1e4) // portrait: scene y of the bottom of the name — kites fly below it
   const [off, setOff] = useState(false)
   // phones and upright tablets get their own framing of the scene
   const portrait = useMedia('(max-aspect-ratio: 9/10)', false)
@@ -55,13 +57,16 @@ export default function NadiHero() {
       if (layer) {
         const Lw = layer.offsetWidth, Lh = layer.offsetHeight, k = Math.max(Lw / 1600, Lh / 900)
         kiteMin.current = 0 // kites fly in front of the name
-        driveKites(ref.current, 0, true, portraitRef.current, kiteMin.current)
+        // portrait framing (viewBox 1100 -60 500 960, slice, anchored bottom): where the name ends, in scene y
+        const kp = Math.max(Lw / 500, Lh / 960), t = box.closest('.nh-title')
+        kiteTop.current = (t.offsetTop + t.offsetHeight - layer.offsetTop - (Lh - 960 * kp)) / kp - 60
+        driveKites(ref.current, 0, true, false, kiteMin.current)
 
         // the words on the land, placed in scene units within their own layer (so they move with it):
         // landscape — the left bank, just under the palms; portrait — the near bank, below the people
-        const land = ref.current.querySelector('.nh-land'), near = ref.current.querySelector('.nh-land-p')
-        if (land) land.style.top = `${Lh - 900 * k + 676 * k}px`
-        if (near) { const kp = Math.max(Lw / 500, Lh / 960); near.style.top = `${Lh - 960 * kp + (824 + 60) * kp}px` }
+        const land = ref.current.querySelector('.nh-land')
+        const kl = portraitRef.current ? Lw / 1600 : k
+        if (land) land.style.top = `${Lh - 900 * kl + 676 * kl}px`
       }
     }
     fit()
@@ -72,7 +77,7 @@ export default function NadiHero() {
   }, [])
 
   // kites in their resting pose straight away (also the reduced-motion picture)
-  useLayoutEffect(() => { driveKites(ref.current, 0, true, portrait, kiteMin.current) }, [portrait])
+  useLayoutEffect(() => { driveKites(ref.current, 0, true, false, kiteMin.current) }, [portrait])
 
   useEffect(() => {
     const io = new IntersectionObserver(([e]) => setOff(!e.isIntersecting))
@@ -84,7 +89,7 @@ export default function NadiHero() {
   useEffect(() => {
     if (!show || off || prefersReducedMotion()) return
     const t0 = performance.now()
-    const tick = () => driveKites(ref.current, (performance.now() - t0) / 1000, false, portrait, kiteMin.current)
+    const tick = () => driveKites(ref.current, (performance.now() - t0) / 1000, false, false, kiteMin.current)
     gsap.ticker.add(tick)
     return () => gsap.ticker.remove(tick)
   }, [show, off, portrait])
@@ -134,23 +139,25 @@ export default function NadiHero() {
   }, [show])
 
   // layers are oversized so parallax never shows an edge; ground stays on the bottom
-  const L = 'absolute -left-12 -right-12 -top-32 bottom-0 will-change-transform'
+  // phones have no pointer parallax, so their layers span the screen exactly and everyone stays in frame
+  const L = `absolute ${portrait ? 'inset-x-0' : '-left-12 -right-12'} -top-32 bottom-0 will-change-transform`
+  // phones: a scene of their own (hero/PhoneScene.jsx), in the same animated layers
 
   return (
     <section id="top" ref={ref} aria-label="NADI Foundation"
-      className={`nh relative h-[100svh] min-h-[420px] overflow-hidden bg-[#1C3557] ${off ? 'is-off' : ''}`}>
+      className={`nh relative h-[100svh] ${portrait ? 'min-h-[560px]' : 'min-h-[420px]'} overflow-hidden bg-[#1C3557] ${off ? 'is-off' : ''}`}>
       <SceneDefs />
       <Portrait.Provider value={portrait}>
-      <div className="nh-s0 absolute inset-0"><div className={`nh-l0 ${L}`}><Sky /></div></div>
-      <div className="nh-s1 absolute inset-0"><div className={`nh-l1 ${L}`}><FarHills /></div></div>
+      <div className="nh-s0 absolute inset-0"><div className={`nh-l0 ${L}`}>{portrait ? <PhoneSky /> : <Sky />}</div></div>
+      <div className="nh-s1 absolute inset-0"><div className={`nh-l1 ${L}`}>{portrait ? <PhoneHills /> : <FarHills />}</div></div>
       <div className="nh-s2 absolute inset-0"><div className={`nh-l2 ${L}`}>
-        <Banks />
-        {/* a few quiet words on the land — what NADI is, in a light hand */}
-        <LandWords className={`nh-land left-[calc(5vw+48px)] ${portrait ? 'hidden' : ''}`} />
+        {portrait ? <PhoneLand /> : <Banks />}
+        {/* a few quiet words on the land — what NADI is, in a light hand (phones: drawn in PhoneLand) */}
+        {!portrait && <LandWords className="nh-land left-[calc(5vw+48px)]" />}
       </div></div>
 
       {/* the name, in the sky behind one palm and the kites: one huge clean word, Foundation set small beneath */}
-      <div className="nh-title absolute inset-x-0 top-[11svh] px-[4vw] sm:top-[9svh]">
+      <div className={`nh-title absolute inset-x-0 top-[11svh] px-[4vw] sm:top-[9svh] ${portrait ? 'z-[3]' : ''}`}>
         <div ref={title} className="nh-title-in w-full">
           {/* the heading shrinks to the word, so Foundation ends exactly where Nadi does */}
           <h1 className="inline-block">
@@ -166,14 +173,13 @@ export default function NadiHero() {
       </div>
 
       {/* the one palm that stands in front of the name */}
-      <div className="nh-s2 absolute inset-0"><div className={`nh-l2b ${L}`}><Banks front /></div></div>
+      {!portrait && <div className="nh-s2 absolute inset-0"><div className={`nh-l2b ${L}`}><Banks front /></div></div>}
 
-      <div className="nh-s3 absolute inset-0"><div className={`nh-l3 ${L}`}><River /></div></div>
+      <div className="nh-s3 absolute inset-0"><div className={`nh-l3 ${L}`}>{portrait ? <PhoneRiver /> : <River />}</div></div>
 
 
       <div className={`nh-l4 z-[2] ${L}`}>
-        <NearBank />
-        <LandWords className={`nh-land-p left-1/2 -translate-x-1/2 text-center ${portrait ? '' : 'hidden'}`} />
+        {portrait ? <PhoneNear /> : <NearBank />}
       </div>
       </Portrait.Provider>
 
