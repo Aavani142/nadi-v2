@@ -3,6 +3,7 @@ import { leadership as L, impact } from '../data/nadi.js'
 import { gsap, revealIn, useGsap, ScrollTrigger } from '../lib/gsap.js'
 import { Img } from './ui.jsx'
 import { Doodled, Doodle } from './Doodle.jsx'
+import PaperBackdrop from './PaperBackdrop.jsx'
 
 /** Team — only the people documented in the Annual Report 2025–2026 (pp. 2–3). No invented bios. */
 const PEOPLE = [L.director, ...L.cofounders]
@@ -31,6 +32,7 @@ export default function TeamSection() {
 
   return (
     <section id="team" ref={ref} aria-labelledby="team-title" className="g-ivory relative overflow-hidden pb-28 pt-24 sm:pt-32 lg:pb-40 lg:pt-40">
+      <PaperBackdrop tone="light" seed={10} />
       <div className="frame">
         <div className="tm-head grid gap-8 lg:grid-cols-12 lg:items-end">
           <div className="lg:col-span-8">
@@ -49,9 +51,9 @@ export default function TeamSection() {
           {PEOPLE.map((p, i) => (
             <li key={p.name} className={`tm-card ${['col-span-2 sm:col-span-1 lg:col-span-5', 'sm:mt-12 lg:col-span-3 lg:col-start-7 lg:mt-24', 'sm:mt-24 lg:col-span-3 lg:mt-48'][i]}`}>
               <figure className="group">
-                <div className="tm-photo aspect-[4/5] overflow-hidden rounded-[6px] bg-surface">
+                <div className="paper-lift"><div className="tm-photo paper-edge aspect-[4/5] overflow-hidden rounded-[6px] bg-surface">
                   <Img photo={p.photo} sizes="(min-width:1024px) 34vw, (min-width:640px) 46vw, 92vw" className="object-top grayscale transition-[filter] duration-700 group-hover:grayscale-0" />
-                </div>
+                </div></div>
                 <figcaption className="mt-5 border-t border-heading/70 pt-4">
                   <p className="font-display text-[clamp(1.15rem,2.4vw,2.2rem)] font-bold leading-tight tracking-[-0.04em] text-heading">{p.name}</p>
                   <p className="eyebrow mt-2 text-accent">{p.role}</p>

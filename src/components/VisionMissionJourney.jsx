@@ -65,7 +65,7 @@ export default function VisionMissionJourney() {
               <div aria-hidden="true" className="absolute inset-0" style={{ background: 'linear-gradient(105deg, rgba(9,58,104,.94) 0%, rgba(9,58,104,.78) 45%, rgba(9,58,104,.35) 100%)' }} />
               <div className="frame relative flex h-full flex-col justify-center pb-16 pt-24">
                 <p className="vj-text eyebrow text-ivory/60">Our {c.label.toLowerCase()}</p>
-                <h3 className="vj-title mt-4 font-display text-[clamp(3.4rem,13vw,10rem)] font-extrabold uppercase leading-[0.9] tracking-[0.005em]" style={{ fontVariationSettings: "'wdth' 100" }}>
+                <h3 className="vj-title mt-4 font-display text-[clamp(2.2rem,11vw,10rem)] font-extrabold uppercase leading-[0.9] tracking-[0.005em]" style={{ fontVariationSettings: "'wdth' 100" }}>
                   {c.label}
                 </h3>
                 <p className="vj-text accent mt-6 max-w-2xl text-[clamp(1.6rem,3.4vw,3rem)] leading-[1.08]">{c.statement}</p>

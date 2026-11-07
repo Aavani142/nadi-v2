@@ -4,6 +4,7 @@ import { network } from '../data/network.js'
 import { Reveal } from '../lib/Motion.jsx'
 import { Eyebrow, Lines } from './ui.jsx'
 import { Doodled, Doodle } from './Doodle.jsx'
+import PaperBackdrop from './PaperBackdrop.jsx'
 
 /** Our Network — the collaborators listed in the Annual Report, as a typographic wall rather than a logo grid. */
 export default function NetworkSection() {
@@ -11,6 +12,7 @@ export default function NetworkSection() {
   const group = network[tab]
   return (
     <section id="network" aria-label="Our Network" className="g-ivory relative overflow-hidden pb-24 pt-24 sm:pt-32 lg:pb-36 lg:pt-40">
+      <PaperBackdrop tone="light" seed={9} />
       <div className="frame">
         <Eyebrow>Our Network</Eyebrow>
         <div className="mt-8 grid gap-8 lg:grid-cols-12">
@@ -28,7 +30,7 @@ export default function NetworkSection() {
           {[
             { k: 'Affiliation', v: 'Ministry of Youth Affairs and Sports', d: 'NADI Foundation is affiliated with the Ministry.', bg: 'bg-navy-deep' },
             { k: 'Collaboration', v: 'HLL Lifecare Limited', d: 'EKATVA is implemented in collaboration with HLL Lifecare Limited.', bg: 'bg-blue' },
-            { k: 'Youth platforms', v: 'NYKS · MY Bharat', d: 'Youth for Action connected young people with Nehru Yuva Kendra, NYKS and MY Bharat.', bg: 'bg-blue-deep' },
+            { k: 'Youth platforms', v: 'NYKS · MY Bharat', d: 'Youth for Action connected young people with Nehru Yuva Kendra, NYKS and MY Bharat.', bg: 'bg-[#42547C]' },
           ].map((f) => (
             <div key={f.k} className={`${f.bg} p-6 text-ivory sm:p-7`}>
               <p className="eyebrow text-mustard-light">{f.k}</p>

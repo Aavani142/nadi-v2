@@ -14,7 +14,7 @@ export default function Footer() {
     <footer className="relative bg-blue text-ivory">
       {/* every page ends on a NADI-blue section, so the footer's wave edge always rises out of that blue */}
       <svg aria-hidden="true" viewBox="0 0 1440 120" preserveAspectRatio="none" className="block h-[60px] w-full sm:h-[100px]">
-        <path d="M0 70 C 240 10, 420 10, 720 60 S 1200 120, 1440 40 V120 H0 Z" fill="#0B4880" />
+        <path d="M0 70 C 240 10, 420 10, 720 60 S 1200 120, 1440 40 V120 H0 Z" fill="#182C48" />
       </svg>
       <div className="relative -mt-px overflow-hidden bg-navy-deep pb-8">
         <div className="frame relative">

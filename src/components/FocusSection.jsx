@@ -4,6 +4,7 @@ import { focusAreas, initiatives } from '../data/nadi.js'
 import { gsap, revealIn, useGsap } from '../lib/gsap.js'
 import { scrollToInitiative, INITIATIVE_IDS } from './InitiativesSection.jsx'
 import { Doodled } from './Doodle.jsx'
+import PaperBackdrop from './PaperBackdrop.jsx'
 
 /**
  * THREE CORE AREAS — three photo panels side by side. The one you hover, focus or tap opens up and
@@ -21,7 +22,7 @@ function Initiatives({ area, tabbable = true }) {
         <li key={key}>
           <a href={`#work-${INITIATIVE_IDS[key]}`} tabIndex={tabbable ? 0 : -1}
             onClick={(e) => { e.preventDefault(); e.stopPropagation(); scrollToInitiative(INITIATIVE_IDS[key]) }}
-            className="group inline-flex min-h-[44px] items-center gap-1.5 rounded-full bg-white px-4 text-[14px] font-semibold text-[#09325A] transition-colors hover:bg-[#09325A] hover:text-white active:scale-[0.97]">
+            className="group inline-flex min-h-[44px] items-center gap-1.5 rounded-full bg-white px-4 text-[14px] font-semibold text-[#1C3557] transition-colors hover:bg-[#4A5E88] hover:text-white active:scale-[0.97]">
             {initiatives[key].name}
             <ArrowDownRight size={15} className="transition-transform group-hover:translate-x-0.5 group-hover:translate-y-0.5" />
           </a>
@@ -54,7 +55,7 @@ function Panel({ area, open, onOpen }) {
   return (
     <article
       onMouseEnter={onOpen} onFocus={onOpen} onClick={onOpen}
-      className="group relative min-w-0 cursor-pointer overflow-hidden rounded-[28px] bg-[#09325A] transition-[flex-grow] duration-700 ease-[cubic-bezier(.22,1,.36,1)]"
+      className="group relative min-w-0 cursor-pointer overflow-hidden rounded-[28px] bg-[#4A5E88] transition-[flex-grow] duration-700 ease-[cubic-bezier(.22,1,.36,1)]"
       style={{ flexGrow: open ? 5 : 1, flexBasis: 0 }}
       aria-expanded={open}
     >
@@ -92,10 +93,10 @@ function Panel({ area, open, onOpen }) {
 function Card({ area }) {
   const accent = ACCENT[area.id]
   return (
-    <article data-reveal className="overflow-hidden rounded-[24px] bg-[#09325A] text-white">
+    <article data-reveal className="overflow-hidden rounded-[24px] bg-[#4A5E88] text-white">
       <div className="relative aspect-[4/3] sm:aspect-[16/9]">
         <Img photo={area.photo} sizes="100vw" />
-        <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-[#09325A] via-transparent to-transparent" />
+        <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-[#1C3557] via-transparent to-transparent" />
         <span className="display absolute bottom-4 left-5 text-5xl leading-none" style={{ color: accent }}>{area.n}</span>
       </div>
       <div className="p-6 sm:p-8">
@@ -120,6 +121,7 @@ export default function FocusSection() {
 
   return (
     <section id="focus" ref={ref} aria-labelledby="focus-title" className="g-ivory relative pb-24 sm:pb-32">
+      <PaperBackdrop tone="light" seed={5} />
       <div className="focus-head frame grid gap-8 pb-12 pt-24 sm:pb-16 sm:pt-32 lg:grid-cols-12 lg:items-end lg:pb-20 lg:pt-40">
         <div className="lg:col-span-8">
           <p className="eyebrow flex items-center gap-3 text-accent"><span aria-hidden="true" className="h-px w-8 bg-current" />Our three core areas</p>

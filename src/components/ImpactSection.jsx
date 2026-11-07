@@ -4,6 +4,7 @@ import { impact, photos } from '../data/nadi.js'
 import { CountUp, ImageReveal, Reveal } from '../lib/Motion.jsx'
 import { Eyebrow, Img, Lines } from './ui.jsx'
 import { Doodled, Doodle } from './Doodle.jsx'
+import PaperBackdrop from './PaperBackdrop.jsx'
 
 function Source({ children, className = '' }) {
   return <p className={`eyebrow inline-flex items-center gap-2 ${className}`}><span className="h-px w-6 bg-current opacity-60" />{children}</p>
@@ -17,6 +18,7 @@ export default function ImpactSection() {
 
   return (
     <section id="impact" ref={ref} aria-label="Impact" className="g-blue relative overflow-hidden pt-24 sm:pt-32 lg:pt-40">
+      <PaperBackdrop tone="dark" seed={6} />
       <div className="frame">
         <Eyebrow tone="text-accent">Impact</Eyebrow>
         <div className="mt-8 grid gap-8 lg:grid-cols-12">

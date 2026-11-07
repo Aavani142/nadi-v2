@@ -10,10 +10,10 @@ export default {
            One deep institutional blue, warm off-white & white grounds, soft greys and a muted blue.
            Older token names (forest / mustard / terracotta) are kept as ALIASES into this blue system
            so every component follows the same restrained palette. */
-        ivory: '#F7F6F2', // warm off-white ground
-        cream: '#EEF1F4', // soft grey surface
-        sand: '#DCE2E9', // grey rule / placeholder
-        ink: '#14202E', // body text
+        ivory: '#F6EFE4', // warm off-white ground
+        cream: '#EDE2D2', // soft grey surface
+        sand: '#DECFBA', // grey rule / placeholder
+        ink: '#2C2830', // body text
         navy: { DEFAULT: v('navy'), deep: v('navy-deep') }, // institutional dark sections (lifted slightly in dark mode)
         /* Theme-aware semantic tokens — values live in src/index.css (:root + prefers-color-scheme: dark) */
         page: v('page'), // page ground
@@ -29,19 +29,19 @@ export default {
         coral: '#EE5A3B',
         leaf: '#1E9E62',
         berry: '#C23B7A',
-        sky: '#2A86C6',
+        sky: '#3F7290',
         blue: {
-          DEFAULT: '#0468B1', // primary — institutional blue (UNDP-like), close to the NADI logo sun
-          wave: '#2A86C6', // NADI logo upper wave
-          mist: '#8FB4D8', // muted blue
-          haze: '#E6EEF6', // pale blue surface
-          deep: '#034E86',
-          night: '#082842',
+          DEFAULT: '#4C6A96', // primary — river blue at dusk, from the landing's water
+          wave: '#3F7290', // river teal
+          mist: '#A8B6CC', // dusk haze
+          haze: '#F2E4D2', // warm paper tint
+          deep: '#1C3557',
+          night: '#14243A',
         },
         // aliases → blue system
-        forest: { DEFAULT: '#0B3C68', deep: '#082F52', light: '#A9C6E3' },
-        mustard: { DEFAULT: '#BFD6EC', light: '#DCE9F5' }, // light muted blue: CTAs & accents on dark grounds
-        terracotta: { DEFAULT: '#0468B1', deep: '#034E86' }, // eyebrows & accents on light grounds
+        forest: { DEFAULT: '#2C4838', deep: '#1F3529', light: '#B9C8A6' },
+        mustard: { DEFAULT: '#F2C9A0', light: '#F7DFC4' }, // light muted blue: CTAs & accents on dark grounds
+        terracotta: { DEFAULT: '#B2583A', deep: '#8F4329' }, // eyebrows & accents on light grounds
         // Legacy tokens kept so pre-existing (unused) components still compile
         nadi: {
           deep: '#175B91', royal: '#216FA5', cream: '#FFFBEA', off: '#F8F7F1',

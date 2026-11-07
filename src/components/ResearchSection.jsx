@@ -3,11 +3,13 @@ import { photos } from '../data/nadi.js'
 import { CountUp, ImageReveal, Reveal } from '../lib/Motion.jsx'
 import { Eyebrow, Img, Lines } from './ui.jsx'
 import { Doodled, Doodle } from './Doodle.jsx'
+import PaperBackdrop from './PaperBackdrop.jsx'
 
 /** Research & field learning — how NADI's youth study community realities first-hand. */
 export default function ResearchSection() {
   return (
     <section id="research" aria-label="Research" className="relative overflow-hidden bg-navy pb-24 pt-24 text-ivory sm:pt-32 lg:pb-36 lg:pt-40">
+      <PaperBackdrop tone="dark" seed={4} />
       <div className="frame relative">
         <Eyebrow tone="text-mustard">Research</Eyebrow>
         <div className="mt-8 grid gap-10 lg:grid-cols-12 lg:gap-8">

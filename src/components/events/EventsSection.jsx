@@ -9,6 +9,7 @@ import FeaturedEvent from './FeaturedEvent.jsx'
 import EventCard from './EventCard.jsx'
 import EventDetails from './EventDetails.jsx'
 import { Doodled } from '../Doodle.jsx'
+import PaperBackdrop from '../PaperBackdrop.jsx'
 
 /** Loads events through the data layer. Replace `getEvents` with a Supabase query later — same shape. */
 function useEvents() {
@@ -78,6 +79,7 @@ export default function EventsSection() {
 
   return (
     <section id="events" ref={ref} aria-label="What's happening at NADI" className="g-ivory relative overflow-hidden pb-24 pt-24 sm:pt-32 lg:pb-36 lg:pt-40">
+      <PaperBackdrop tone="light" seed={2} />
       <div className="frame relative">
         <div className="grid gap-8 border-b border-fg/10 pb-10 lg:grid-cols-12 lg:items-end">
           <div className="relative lg:col-span-8">

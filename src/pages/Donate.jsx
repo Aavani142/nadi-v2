@@ -36,10 +36,10 @@ export default function Donate() {
       <section className="relative overflow-hidden bg-navy-deep pb-20 pt-32 text-ivory sm:pt-40 lg:pb-28">
         <div className="frame grid gap-12 lg:grid-cols-12 lg:items-end">
           <div className="lg:col-span-7">
-            <p className="dn-fade eyebrow flex items-center gap-3 text-[#BFD6EC]"><span aria-hidden="true" className="h-px w-8 bg-current" />Donate</p>
+            <p className="dn-fade eyebrow flex items-center gap-3 text-[#F2C9A0]"><span aria-hidden="true" className="h-px w-8 bg-current" />Donate</p>
             <h1 className="display mt-6 text-[clamp(3rem,8.4vw,8.6rem)] leading-[0.86] tracking-[-0.05em]">
               {['Support', 'the next wave', 'of change.'].map((w, i) => (
-                <span key={w} className={`block overflow-hidden pb-[0.05em] ${i === 1 ? 'accent font-normal text-[#BFD6EC]' : ''}`}><span className="dn-word block">{w}</span></span>
+                <span key={w} className={`block overflow-hidden pb-[0.05em] ${i === 1 ? 'accent font-normal text-[#F2C9A0]' : ''}`}><span className="dn-word block">{w}</span></span>
               ))}
             </h1>
             <p className="dn-fade mt-8 max-w-xl text-[17px] leading-relaxed text-ivory/80">
@@ -89,10 +89,10 @@ export default function Donate() {
 
       <section aria-labelledby="how-title" className="bg-navy pb-24 pt-24 text-ivory sm:pt-32 lg:pb-32">
         <div className="frame">
-          <p className="eyebrow flex items-center gap-3 text-[#BFD6EC]"><span aria-hidden="true" className="h-px w-8 bg-current" />How to give</p>
+          <p className="eyebrow flex items-center gap-3 text-[#F2C9A0]"><span aria-hidden="true" className="h-px w-8 bg-current" />How to give</p>
           <h2 id="how-title" data-reveal-lines className="display mt-6 text-[clamp(2.4rem,5.4vw,5rem)] leading-[0.92]">
             <span className="block overflow-hidden pb-[0.05em]"><span data-line className="block">Reach the</span></span>
-            <span className="block overflow-hidden pb-[0.08em]"><span data-line className="accent block text-[#BFD6EC]">NADI office.</span></span>
+            <span className="block overflow-hidden pb-[0.08em]"><span data-line className="accent block text-[#F2C9A0]">NADI office.</span></span>
           </h2>
           <div className="mt-14 grid border-y border-white/15 md:grid-cols-3">
             {ways.map((w, i) => (
@@ -112,13 +112,13 @@ export default function Donate() {
 
       <section aria-labelledby="other-title" className="relative overflow-hidden bg-blue pb-24 pt-24 text-ivory sm:pt-32 lg:pb-32">
         <div className="frame">
-          <p className="eyebrow flex items-center gap-3 text-[#CFE2F4]"><span aria-hidden="true" className="h-px w-8 bg-current" />Other ways to help</p>
-          <h2 id="other-title" className="display mt-6 text-[clamp(2.4rem,5.4vw,5rem)] leading-[0.92]">Give time. <span className="accent font-normal text-[#CFE2F4]">Or a platform.</span></h2>
+          <p className="eyebrow flex items-center gap-3 text-[#F7DFC4]"><span aria-hidden="true" className="h-px w-8 bg-current" />Other ways to help</p>
+          <h2 id="other-title" className="display mt-6 text-[clamp(2.4rem,5.4vw,5rem)] leading-[0.92]">Give time. <span className="accent font-normal text-[#F7DFC4]">Or a platform.</span></h2>
           <ul className="mt-14 grid gap-12 md:grid-cols-3 md:gap-8">
             {frameworks.slice(0, 3).map((f, i) => (
               <li key={f.k} data-reveal data-delay={i * 0.08} className="group">
                 <div className="aspect-[4/3] overflow-hidden rounded-[6px]"><Img photo={f.photo} sizes="(min-width:768px) 30vw, 92vw" className="transition-transform duration-1000 ease-out group-hover:scale-[1.05]" /></div>
-                <p className="eyebrow mt-5 text-[#CFE2F4]">{f.for}</p>
+                <p className="eyebrow mt-5 text-[#F7DFC4]">{f.for}</p>
                 <h3 className="mt-2 text-[1.5rem] font-semibold tracking-[-0.02em]">{f.k}</h3>
                 <p className="mt-2 text-[15px] leading-relaxed text-ivory/75">{f.text}</p>
                 <a href={ctas[f.cta].href} className="mt-2 inline-flex min-h-[44px] items-center text-[14px] font-semibold underline decoration-ivory/40 underline-offset-4">{ctas[f.cta].label}</a>

@@ -8,7 +8,7 @@ export default function EventCard({ event, onOpen, hidden = false }) {
   return (
     <li aria-hidden={hidden || undefined} className={`w-[78vw] max-w-[320px] shrink-0 sm:w-[320px] ${hidden ? 'ev-dup' : ''}`}>
       <button type="button" onClick={() => onOpen(event)} tabIndex={hidden ? -1 : 0} aria-label={`View details: ${event.title}`}
-        className="group flex h-full w-full flex-col overflow-hidden rounded-[20px] border border-fg/10 bg-paper text-left shadow-[0_18px_40px_-28px_rgba(9,50,90,.45)] transition-[transform,box-shadow] duration-500 ease-out hover:-translate-y-1.5 hover:shadow-[0_28px_50px_-26px_rgba(9,50,90,.55)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent">
+        className="group flex h-full w-full flex-col overflow-hidden paper-sheet rounded-[20px] border border-fg/10 bg-paper text-left transition-[transform,box-shadow] duration-500 ease-out hover:-translate-y-1.5 hover:shadow-[0_28px_50px_-26px_rgba(9,50,90,.55)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent">
         <div className="relative aspect-square overflow-hidden bg-surface">
           <Img photo={event.image} sizes="320px" className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05]" />
           <div className="absolute left-3 top-3 rounded-xl bg-paper/95 px-3 py-1.5 shadow-[0_8px_20px_-12px_rgba(0,0,0,.5)] backdrop-blur">

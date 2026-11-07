@@ -1,40 +1,68 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
-import { useRevealed, prefersReducedMotion } from '../lib/intro.js'
+import { useRevealed, prefersReducedMotion, useMedia } from '../lib/intro.js'
 import { gsap, useGsap } from '../lib/gsap.js'
-import { SceneDefs, Sky, FarHills, Banks, River, NearBank, driveKites, WATER, GRAIN } from './hero/RiverScene.jsx'
+import { SceneDefs, Sky, FarHills, Banks, River, NearBank, driveKites, GRAIN, Portrait } from './hero/RiverScene.jsx'
 
 /**
  * Landing: a cut-paper Kerala backwater at golden hour — hills, palms, the river (nadi), and NADI's
- * people on the near bank flying kites, talking, pointing at the sky — and the name, filled with
- * flowing water. Nothing else.
+ * people on the near bank flying kites, talking, pointing at the sky — and the name: one huge, clean,
+ * white "Nadi" across the sky, set inside the scene's depth so palms and kites pass in front of it.
  *
- * Motion: the layers rise into place far-to-near and the name surfaces line by line; the water inside
- * the letters keeps flowing; kites drift on their strings, ripples slide downstream, the boat rocks.
+ * Motion: the layers rise into place far-to-near and the name surfaces from behind the hills;
+ * kites drift on their strings, ripples slide downstream, the boat rocks.
  * Pointer and scroll move each layer at its own depth. Loops pause off-screen.
  * Reduced motion: the finished scene, still.
  */
 
-const WORDS = ['NADI', 'FOUNDATION']
+const WORDS = ['Nadi', 'Foundation']
 const DEPTH = [6, 10, 16, 20, 30] // pointer travel (px) per layer, far → near
+
+/** A line about NADI written lightly on the land — no call to action, just who they are. */
+function LandWords({ className = '' }) {
+  return (
+    <p className={`pointer-events-none absolute whitespace-nowrap ${className}`}>
+      <span className="block font-serif text-[clamp(14px,1.45vw,23px)] font-light italic leading-tight text-[#F6EADA]/70">a river of change, shaped by young people</span>
+      <span className="mt-1.5 block font-mono text-[clamp(8.5px,0.72vw,11px)] uppercase tracking-[0.2em] text-[#F6EADA]/45">Thiruvananthapuram · Kerala<span className="max-xl:hidden"> · since 2022</span></span>
+    </p>
+  )
+}
 
 export default function NadiHero() {
   const show = useRevealed()
   const ref = useRef(null)
   const title = useRef(null)
+  const kiteMin = useRef(0)
   const [off, setOff] = useState(false)
+  // phones and upright tablets get their own framing of the scene
+  const portrait = useMedia('(max-aspect-ratio: 9/10)', false)
+  const portraitRef = useRef(portrait)
+  portraitRef.current = portrait
 
   // NADI and FOUNDATION set to one width — a justified lockup, sized to the title box and capped by height
   useLayoutEffect(() => {
     const box = title.current
     const fit = () => {
       if (!box.offsetWidth) return
-      const [ln, lf] = box.querySelectorAll('.nh-word')
-      ln.style.fontSize = lf.style.fontSize = '100px'
-      const wn = ln.offsetWidth, wf = lf.offsetWidth
-      const H = ref.current.offsetHeight
-      const sn = Math.min((100 * box.clientWidth) / wn, (H * 0.4) / (0.86 + (0.98 * wn) / wf))
+      // the one big word fills the width of the frame, capped by the height of the sky
+      const ln = box.querySelector('.nh-big')
+      ln.style.fontSize = '100px'
+      const wn = ln.offsetWidth, H = ref.current.offsetHeight
+      const sn = Math.min((100 * box.clientWidth) / wn, H * 0.6)
       ln.style.fontSize = `${sn}px`
-      lf.style.fontSize = `${(wn * sn) / wf}px`
+      // where the title ends, in scene units (layers are 1600×900, slice-anchored bottom-right, oversized
+      // by 48px a side): kites stay to the right of it
+      const layer = ref.current.querySelector('.nh-l4')
+      if (layer) {
+        const Lw = layer.offsetWidth, Lh = layer.offsetHeight, k = Math.max(Lw / 1600, Lh / 900)
+        kiteMin.current = 0 // kites fly in front of the name
+        driveKites(ref.current, 0, true, portraitRef.current, kiteMin.current)
+
+        // the words on the land, placed in scene units within their own layer (so they move with it):
+        // landscape — the left bank, just under the palms; portrait — the near bank, below the people
+        const land = ref.current.querySelector('.nh-land'), near = ref.current.querySelector('.nh-land-p')
+        if (land) land.style.top = `${Lh - 900 * k + 676 * k}px`
+        if (near) { const kp = Math.max(Lw / 500, Lh / 960); near.style.top = `${Lh - 960 * kp + (824 + 60) * kp}px` }
+      }
     }
     fit()
     document.fonts?.ready.then(fit)
@@ -44,7 +72,7 @@ export default function NadiHero() {
   }, [])
 
   // kites in their resting pose straight away (also the reduced-motion picture)
-  useLayoutEffect(() => { driveKites(ref.current, 0, true) }, [])
+  useLayoutEffect(() => { driveKites(ref.current, 0, true, portrait, kiteMin.current) }, [portrait])
 
   useEffect(() => {
     const io = new IntersectionObserver(([e]) => setOff(!e.isIntersecting))
@@ -56,15 +84,18 @@ export default function NadiHero() {
   useEffect(() => {
     if (!show || off || prefersReducedMotion()) return
     const t0 = performance.now()
-    const tick = () => driveKites(ref.current, (performance.now() - t0) / 1000)
+    const tick = () => driveKites(ref.current, (performance.now() - t0) / 1000, false, portrait, kiteMin.current)
     gsap.ticker.add(tick)
     return () => gsap.ticker.remove(tick)
-  }, [show, off])
+  }, [show, off, portrait])
 
   // starting state, before the intro hands over
   useGsap(ref, () => {
     gsap.set('.nh-l0', { opacity: 0, scale: 1.08 })
     gsap.set(['.nh-l1', '.nh-l2', '.nh-l3', '.nh-l4'], { yPercent: (i) => 10 + i * 5 })
+    gsap.set('.nh-l2b', { yPercent: 15 }) // moves with the bank
+    // the lines mask their words only while they rise — afterwards the letters and their shadow show whole
+    gsap.set('.nh-line', { overflow: 'hidden' })
     gsap.set('.nh-word', { yPercent: 105 })
     gsap.set(['.rs-kite', '.rs-strings'], { opacity: 0 })
   })
@@ -74,24 +105,27 @@ export default function NadiHero() {
     gsap.timeline({ defaults: { ease: 'expo.out' } })
       .to('.nh-l0', { opacity: 1, scale: 1, duration: 1.8 }, 0)
       .to(['.nh-l1', '.nh-l2', '.nh-l3', '.nh-l4'], { yPercent: 0, duration: 1.9, stagger: 0.14 }, 0.15)
+      .to('.nh-l2b', { yPercent: 0, duration: 1.9 }, 0.29)
       .to('.nh-word', { yPercent: 0, duration: 1.4, stagger: 0.14 }, 0.6)
+      .set('.nh-line', { overflow: 'visible' }, 1.95)
       .to(['.rs-strings', '.rs-kite'], { opacity: 1, duration: 1.2, stagger: 0.15, ease: 'power2.out' }, 1.3)
 
     // scroll away: the far world sinks slower than the near — and the name lifts out
     gsap.timeline({ scrollTrigger: { trigger: ref.current, start: 'top top', end: 'bottom top', scrub: true } })
-      .to('.nh-l0', { yPercent: 22, ease: 'none' }, 0)
-      .to('.nh-l1', { yPercent: 16, ease: 'none' }, 0)
-      .to('.nh-l2', { yPercent: 11, ease: 'none' }, 0)
-      .to('.nh-l3', { yPercent: 6, ease: 'none' }, 0)
+      .fromTo('.nh-s0', { yPercent: 0 }, { yPercent: 22, ease: 'none' }, 0)
+      .fromTo('.nh-s1', { yPercent: 0 }, { yPercent: 16, ease: 'none' }, 0)
+      .fromTo('.nh-s2', { yPercent: 0 }, { yPercent: 11, ease: 'none' }, 0)
+      .fromTo('.nh-s3', { yPercent: 0 }, { yPercent: 6, ease: 'none' }, 0)
       .to('.nh-title', { yPercent: -40, opacity: 0.15, ease: 'none' }, 0)
 
     if (window.matchMedia('(pointer: fine)').matches) {
       const qs = ['.nh-l0', '.nh-l1', '.nh-l2', '.nh-l3', '.nh-l4'].map((c) => gsap.quickTo(c, 'x', { duration: 1.4, ease: 'power3.out' }))
+      const qb = gsap.quickTo('.nh-l2b', 'x', { duration: 1.4, ease: 'power3.out' })
       const tx = gsap.quickTo('.nh-title-in', 'x', { duration: 1.2, ease: 'power3.out' })
       const ty = gsap.quickTo('.nh-title-in', 'y', { duration: 1.2, ease: 'power3.out' })
       const move = (e) => {
         const dx = e.clientX / window.innerWidth - 0.5, dy = e.clientY / window.innerHeight - 0.5
-        qs.forEach((q, i) => q(-dx * DEPTH[i] * 2))
+        qs.forEach((q, i) => q(-dx * DEPTH[i] * 2)); qb(-dx * DEPTH[2] * 2)
         tx(dx * 14); ty(dy * 10)
       }
       window.addEventListener('pointermove', move, { passive: true })
@@ -104,28 +138,44 @@ export default function NadiHero() {
 
   return (
     <section id="top" ref={ref} aria-label="NADI Foundation"
-      className={`nh relative h-[100svh] min-h-[600px] overflow-hidden bg-[#1C3557] ${off ? 'is-off' : ''}`}>
+      className={`nh relative h-[100svh] min-h-[420px] overflow-hidden bg-[#1C3557] ${off ? 'is-off' : ''}`}>
       <SceneDefs />
-      <div className={`nh-l0 ${L}`}><Sky /></div>
-      <div className={`nh-l1 ${L}`}><FarHills /></div>
-      <div className={`nh-l2 ${L}`}><Banks /></div>
-      <div className={`nh-l3 ${L}`}><River /></div>
+      <Portrait.Provider value={portrait}>
+      <div className="nh-s0 absolute inset-0"><div className={`nh-l0 ${L}`}><Sky /></div></div>
+      <div className="nh-s1 absolute inset-0"><div className={`nh-l1 ${L}`}><FarHills /></div></div>
+      <div className="nh-s2 absolute inset-0"><div className={`nh-l2 ${L}`}>
+        <Banks />
+        {/* a few quiet words on the land — what NADI is, in a light hand */}
+        <LandWords className={`nh-land left-[calc(5vw+48px)] ${portrait ? 'hidden' : ''}`} />
+      </div></div>
 
-      {/* the name, filled with flowing water */}
-      <div className="nh-title absolute inset-x-0 top-[15svh] z-[3] px-[5vw] sm:top-[17svh]">
-        <div ref={title} className="nh-title-in w-full sm:w-[64vw] lg:w-[56vw]">
-          <h1 className="font-display font-extrabold uppercase leading-[0.84] tracking-[-0.04em]">
+      {/* the name, in the sky behind one palm and the kites: one huge clean word, Foundation set small beneath */}
+      <div className="nh-title absolute inset-x-0 top-[11svh] px-[4vw] sm:top-[9svh]">
+        <div ref={title} className="nh-title-in w-full">
+          {/* the heading shrinks to the word, so Foundation ends exactly where Nadi does */}
+          <h1 className="inline-block">
             <span className="sr-only">NADI Foundation</span>
-            {WORDS.map((w, i) => (
-              <span key={w} aria-hidden="true" className={`nh-line block overflow-hidden pb-[0.05em] ${i ? 'mt-[0.1em]' : ''}`}>
-                <span className="nh-word inline-block whitespace-nowrap" style={{ backgroundImage: WATER, animationDuration: `${34 + i * 9}s`, animationDirection: i ? 'reverse' : 'normal' }}>{w}</span>
-              </span>
-            ))}
+            <span aria-hidden="true" className="nh-line block">
+              <span className="nh-word nh-big inline-block whitespace-nowrap">{WORDS[0]}</span>
+            </span>
+            <span aria-hidden="true" className="nh-line nh-subline flex items-center justify-end gap-4 pr-[0.5vw]">
+              <span className="nh-word nh-sub flex items-center gap-4"><span className="h-px w-10 bg-current opacity-60 sm:w-16" />{WORDS[1]}</span>
+            </span>
           </h1>
         </div>
       </div>
 
-      <div className={`nh-l4 z-[2] ${L}`}><NearBank /></div>
+      {/* the one palm that stands in front of the name */}
+      <div className="nh-s2 absolute inset-0"><div className={`nh-l2b ${L}`}><Banks front /></div></div>
+
+      <div className="nh-s3 absolute inset-0"><div className={`nh-l3 ${L}`}><River /></div></div>
+
+
+      <div className={`nh-l4 z-[2] ${L}`}>
+        <NearBank />
+        <LandWords className={`nh-land-p left-1/2 -translate-x-1/2 text-center ${portrait ? '' : 'hidden'}`} />
+      </div>
+      </Portrait.Provider>
 
       {/* paper grain over everything */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-[4] opacity-[.22] mix-blend-multiply" style={{ backgroundImage: GRAIN }} />

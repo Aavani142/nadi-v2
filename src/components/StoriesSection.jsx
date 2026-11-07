@@ -5,6 +5,7 @@ import { stories, press, instagramPosts, contact, initiatives } from '../data/na
 import { ImageReveal, Reveal } from '../lib/Motion.jsx'
 import { Eyebrow, Img, Lines, EASE } from './ui.jsx'
 import { Doodled, Doodle } from './Doodle.jsx'
+import PaperBackdrop from './PaperBackdrop.jsx'
 
 function Story({ s, className = '', aspect = 'aspect-[4/3]', sizes = '(min-width:1024px) 33vw, 92vw', delay = 0 }) {
   return (
@@ -110,6 +111,7 @@ export default function StoriesSection() {
   const f = stories.featured
   return (
     <section id="stories" className="g-ivory relative pb-28 pt-24 sm:pt-32 lg:pb-40 lg:pt-40">
+      <PaperBackdrop tone="light" seed={12} />
       <div className="frame">
         <Eyebrow>Stories</Eyebrow>
         <div className="mt-10 grid gap-8 lg:grid-cols-12">

@@ -89,7 +89,7 @@ export default function Navbar() {
                       className={`group relative block px-2.5 py-2 text-[13.5px] font-semibold transition-opacity ${isActive ? 'opacity-100' : 'opacity-75 hover:opacity-100'}`}>
                       {n.label}
                       <span className={`absolute inset-x-2.5 -bottom-0.5 h-[2px] origin-left scale-x-0 rounded-full transition-transform duration-300 group-hover:scale-x-100 bg-ivory/50`} />
-                      {isActive && <motion.span layoutId="nav-active" className={`absolute inset-x-2.5 -bottom-0.5 h-[2px] rounded-full ${solid ? 'bg-[#78BAEC]' : 'bg-white'}`} transition={{ type: 'spring', stiffness: 380, damping: 32 }} />}
+                      {isActive && <motion.span layoutId="nav-active" className={`absolute inset-x-2.5 -bottom-0.5 h-[2px] rounded-full ${solid ? 'bg-[#F2B27E]' : 'bg-white'}`} transition={{ type: 'spring', stiffness: 380, damping: 32 }} />}
                     </NavLink>
                   </li>
                 )
@@ -99,7 +99,7 @@ export default function Navbar() {
             <div className="flex items-center gap-2">
               <NavLink item={cta} onAnchor={onAnchor}
                 aria-current={pathname === cta.path ? 'page' : undefined}
-                className="group inline-flex min-h-[44px] items-center gap-1.5 rounded-full bg-ivory px-3.5 py-2 text-[13px] max-[359px]:px-3 font-semibold text-navy-deep shadow-[0_8px_24px_-12px_rgba(0,0,0,.5)] transition-colors duration-300 hover:bg-[#78BAEC] sm:gap-2 sm:px-5 sm:py-2.5 sm:text-[13.5px]">
+                className="group inline-flex min-h-[44px] items-center gap-1.5 rounded-full bg-ivory px-3.5 py-2 text-[13px] max-[359px]:px-3 font-semibold text-navy-deep shadow-[0_8px_24px_-12px_rgba(0,0,0,.5)] transition-colors duration-300 hover:bg-[#F2B27E] sm:gap-2 sm:px-5 sm:py-2.5 sm:text-[13.5px]">
                 {cta.label}
                 <ArrowUpRight size={15} className="max-[359px]:hidden transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
               </NavLink>

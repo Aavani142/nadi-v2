@@ -10,6 +10,11 @@ import { Img, PillLink } from '../components/ui.jsx'
 import { INITIATIVE_IDS } from '../components/InitiativesSection.jsx'
 import AnnualReportsSection from '../components/reports/AnnualReportsSection.jsx'
 import VisionMissionJourney from '../components/VisionMissionJourney.jsx'
+import PaperSeam, { SeamDefs } from '../components/PaperSeam.jsx'
+import PaperBackdrop from '../components/PaperBackdrop.jsx'
+
+// grounds each seam rises into — the same palette as the homepage
+const IVORY = 'rgb(246 239 228)', NAVY_DEEP = 'rgb(66 84 124)', NAVY = 'rgb(78 98 140)', DONATE = '#4C6A96'
 
 const Eyebrow = ({ children, className = 'text-accent' }) => (
   <p className={`eyebrow flex items-center gap-3 ${className}`}><span aria-hidden="true" className="h-px w-8 bg-current" /><span className="ab-scramble">{children}</span></p>
@@ -83,22 +88,24 @@ export default function About() {
 
   return (
     <main id="main" ref={ref} className="relative">
+      <SeamDefs />
       <div aria-hidden="true" className="pointer-events-none absolute bottom-0 left-[4px] top-[92svh] z-[5] w-4 sm:left-[10px] sm:w-6 lg:left-[18px]">
-        <svg viewBox="0 0 24 1200" preserveAspectRatio="none" fill="none" className="ab-river block h-full w-full text-[#78BAEC] opacity-60">
+        <svg viewBox="0 0 24 1200" preserveAspectRatio="none" fill="none" className="ab-river block h-full w-full text-[#F2B27E] opacity-60">
           <path d={RIVER} stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" vectorEffect="non-scaling-stroke" />
         </svg>
       </div>
       {/* A · Hero */}
       <section className="ab-hero relative overflow-hidden bg-navy-deep pb-20 pt-32 text-ivory sm:pt-40 lg:pb-28">
+        <PaperBackdrop tone="dark" seed={21} />
         <div className="frame">
-          <p className="ab-fade eyebrow flex items-center gap-3 text-[#BFD6EC]"><span aria-hidden="true" className="h-px w-8 bg-current" />About us</p>
+          <p className="ab-fade eyebrow flex items-center gap-3 text-[#F2C9A0]"><span aria-hidden="true" className="h-px w-8 bg-current" />About us</p>
           <h1 className="display mt-6 text-[clamp(3.2rem,10.5vw,11rem)] leading-[0.84] tracking-[-0.05em]">
             {['About NADI', 'Foundation'].map((w, i) => (
-              <span key={w} className={`block pb-[0.04em] ${i === 1 ? 'text-[#BFD6EC]' : ''}`}><span className="ab-word block">{w}</span></span>
+              <span key={w} className={`block pb-[0.04em] ${i === 1 ? 'text-[#F2C9A0]' : ''}`}><span className="ab-word block">{w}</span></span>
             ))}
           </h1>
           <div className="mt-14 grid gap-10 lg:mt-20 lg:grid-cols-12 lg:gap-8">
-            <div className="ab-photo-main relative aspect-[16/10] overflow-hidden rounded-[6px] lg:col-span-8">
+            <div className="paper-edge ab-photo-main relative aspect-[16/10] overflow-hidden rounded-[6px] lg:col-span-8">
               <Img photo={photos.teamNight} sizes="(min-width:1024px) 62vw, 92vw" priority />
             </div>
             <div className="flex flex-col lg:col-span-4">
@@ -106,7 +113,7 @@ export default function About() {
                 A youth-driven, ISO 9001:2015 certified non-governmental organisation in Thiruvananthapuram, building resilient communities across Kerala.
               </p>
               <p className="ab-fade mt-5 text-[15.5px] leading-relaxed text-ivory/70">{org.intro}</p>
-              <div className="ab-photo-side mt-8 aspect-[4/3] overflow-hidden rounded-[6px] lg:mt-auto">
+              <div className="paper-edge ab-photo-side mt-8 aspect-[4/3] overflow-hidden rounded-[6px] lg:mt-auto">
                 <Img photo={photos.volunteersMural} sizes="(min-width:1024px) 30vw, 92vw" />
               </div>
             </div>
@@ -115,7 +122,9 @@ export default function About() {
       </section>
 
       {/* B · Who we are */}
-      <section aria-labelledby="who-title" className="g-ivory pb-24 pt-24 sm:pt-32 lg:pb-32 lg:pt-40">
+      <PaperSeam to={IVORY} seed={22} />
+      <section aria-labelledby="who-title" className="relative g-ivory pb-24 pt-24 sm:pt-32 lg:pb-32 lg:pt-40">
+        <PaperBackdrop tone="light" seed={22} />
         <div className="frame grid gap-12 lg:grid-cols-12 lg:gap-8">
           <div className="lg:col-span-5">
             <Eyebrow>Who we are</Eyebrow>
@@ -143,19 +152,21 @@ export default function About() {
       <VisionMissionJourney />
 
       {/* D · Three core focus areas */}
-      <section aria-labelledby="areas-title" className="bg-navy-deep pb-24 pt-24 text-ivory sm:pt-32 lg:pb-32 lg:pt-40">
+      <PaperSeam to={NAVY_DEEP} seed={23} />
+      <section aria-labelledby="areas-title" className="relative bg-navy-deep pb-24 pt-24 text-ivory sm:pt-32 lg:pb-32 lg:pt-40">
+        <PaperBackdrop tone="dark" seed={23} />
         <div className="frame">
-          <Eyebrow className="text-[#BFD6EC]">Our three core focus areas</Eyebrow>
+          <Eyebrow className="text-[#F2C9A0]">Our three core focus areas</Eyebrow>
           <h2 id="areas-title" data-reveal-lines className="display mt-6 text-[clamp(2.6rem,6vw,5.8rem)] leading-[0.9]">
             <span className="block overflow-hidden pb-[0.05em]"><span data-line className="block">Three core areas.</span></span>
-            <span className="block overflow-hidden pb-[0.08em]"><span data-line className="accent block text-[#BFD6EC]">One collective purpose.</span></span>
+            <span className="block overflow-hidden pb-[0.08em]"><span data-line className="accent block text-[#F2C9A0]">One collective purpose.</span></span>
           </h2>
           <ol className="mt-16 grid gap-14 md:grid-cols-3 md:gap-8 lg:mt-24">
             {focusAreas.map((a, i) => (
               <li key={a.id} className={i === 1 ? 'md:mt-20' : ''}>
-                <div data-reveal-img className="aspect-[4/5] overflow-hidden rounded-[6px]"><Img photo={a.photo} sizes="(min-width:768px) 30vw, 92vw" /></div>
-                <p data-reveal className="display mt-6 text-[2.6rem] leading-none text-[#BFD6EC]">{a.n}</p>
-                <h3 data-reveal className="display mt-3 text-[clamp(1.8rem,2.6vw,2.4rem)] leading-[0.95]">{a.title}{a.sub && <span className="accent mt-1 block text-[0.7em] font-normal text-[#BFD6EC]">{a.sub}</span>}</h3>
+                <div data-reveal-img className="paper-edge aspect-[4/5] overflow-hidden rounded-[6px]"><Img photo={a.photo} sizes="(min-width:768px) 30vw, 92vw" /></div>
+                <p data-reveal className="display mt-6 text-[2.6rem] leading-none text-[#F2C9A0]">{a.n}</p>
+                <h3 data-reveal className="display mt-3 text-[clamp(1.8rem,2.6vw,2.4rem)] leading-[0.95]">{a.title}{a.sub && <span className="accent mt-1 block text-[0.7em] font-normal text-[#F2C9A0]">{a.sub}</span>}</h3>
                 <p data-reveal className="mt-4 text-[15.5px] leading-relaxed text-ivory/70">{a.text}</p>
                 <p data-reveal className="eyebrow mt-4 text-ivory/45">{a.initiatives.map((k) => initiatives[k].name).join(' · ')}</p>
               </li>
@@ -165,7 +176,9 @@ export default function About() {
       </section>
 
       {/* E · Our approach */}
-      <section aria-labelledby="approach-title" className="g-ivory pb-24 pt-24 sm:pt-32 lg:pb-32 lg:pt-40">
+      <PaperSeam to={IVORY} seed={24} />
+      <section aria-labelledby="approach-title" className="relative g-ivory pb-24 pt-24 sm:pt-32 lg:pb-32 lg:pt-40">
+        <PaperBackdrop tone="light" seed={24} />
         <div className="frame">
           <Eyebrow>Our approach</Eyebrow>
           <h2 id="approach-title" className="sr-only">Our approach</h2>
@@ -187,12 +200,14 @@ export default function About() {
       </section>
 
       {/* F · Our initiatives */}
-      <section aria-labelledby="initiatives-title" className="bg-navy pb-24 pt-24 text-ivory sm:pt-32 lg:pb-32 lg:pt-40">
+      <PaperSeam to={NAVY} seed={25} />
+      <section aria-labelledby="initiatives-title" className="relative bg-navy pb-24 pt-24 text-ivory sm:pt-32 lg:pb-32 lg:pt-40">
+        <PaperBackdrop tone="dark" seed={25} />
         <div className="frame">
-          <Eyebrow className="text-[#BFD6EC]">Our initiatives</Eyebrow>
+          <Eyebrow className="text-[#F2C9A0]">Our initiatives</Eyebrow>
           <h2 id="initiatives-title" data-reveal-lines className="display mt-6 text-[clamp(2.6rem,6vw,5.8rem)] leading-[0.9]">
             <span className="block overflow-hidden pb-[0.05em]"><span data-line className="block">Five initiatives.</span></span>
-            <span className="block overflow-hidden pb-[0.08em]"><span data-line className="accent block text-[#BFD6EC]">One shared purpose.</span></span>
+            <span className="block overflow-hidden pb-[0.08em]"><span data-line className="accent block text-[#F2C9A0]">One shared purpose.</span></span>
           </h2>
           <ul className="mt-16 border-t border-white/15 lg:mt-20">
             {Object.entries(INITIATIVE_IDS).map(([key, id], i) => {
@@ -200,7 +215,7 @@ export default function About() {
               return (
                 <li key={key} data-reveal className="border-b border-white/15">
                   <Link to={`/#work-${id}`} className="group grid items-center gap-5 py-7 sm:grid-cols-[3rem_9rem_1fr_auto] sm:gap-8">
-                    <span className="hidden text-[12px] font-semibold tabular-nums text-[#BFD6EC] sm:block">0{i + 1}</span>
+                    <span className="hidden text-[12px] font-semibold tabular-nums text-[#F2C9A0] sm:block">0{i + 1}</span>
                     <div className="aspect-[16/9] w-full overflow-hidden rounded-[6px] sm:aspect-[4/3] sm:w-36 sm:rounded-[4px]">
                       <Img photo={INIT_PHOTOS[key]} sizes="(min-width:640px) 144px, 92vw" className="transition-transform duration-700 ease-out group-hover:scale-[1.08]" />
                     </div>
@@ -209,7 +224,7 @@ export default function About() {
                         <span className="inline-flex h-9 items-center rounded-md bg-white px-2"><img src={p.logo} alt="" loading="lazy" className="h-7 w-auto max-w-[6rem] object-contain" /></span>
                         <h3 className="display text-[clamp(1.9rem,3.2vw,3rem)] leading-none transition-transform duration-500 ease-out group-hover:translate-x-2">{p.name}</h3>
                       </div>
-                      <p className="eyebrow mt-3 text-[#BFD6EC]">{p.focus}</p>
+                      <p className="eyebrow mt-3 text-[#F2C9A0]">{p.focus}</p>
                       <p className="mt-2 max-w-2xl text-[15px] leading-relaxed text-ivory/70">{p.lede}</p>
                     </div>
                     <span className="hidden h-12 w-12 place-items-center rounded-full border border-white/25 transition-colors group-hover:bg-ivory group-hover:text-navy-deep sm:grid"><ArrowUpRight size={18} /></span>
@@ -222,13 +237,15 @@ export default function About() {
       </section>
 
       {/* G · Director's message */}
-      <section id="director" aria-labelledby="dir-title" className="g-ivory pb-24 pt-24 sm:pt-32 lg:pb-32 lg:pt-40">
+      <PaperSeam to={IVORY} seed={26} />
+      <section id="director" aria-labelledby="dir-title" className="relative g-ivory pb-24 pt-24 sm:pt-32 lg:pb-32 lg:pt-40">
+        <PaperBackdrop tone="light" seed={26} />
         <div className="frame">
           <Eyebrow>Director's message</Eyebrow>
           <Heading id="dir-title" a="A message from" b="the Director." className="mt-6" />
           <div className="mt-16 grid gap-14 lg:mt-20 lg:grid-cols-12 lg:gap-8">
             <figure className="lg:col-span-4">
-              <div className="ab-dir-photo aspect-[4/5] overflow-hidden rounded-[6px] bg-surface"><Img photo={L.director.photo} sizes="(min-width:1024px) 30vw, 90vw" className="object-top" /></div>
+              <div className="paper-edge ab-dir-photo aspect-[4/5] overflow-hidden rounded-[6px] bg-surface"><Img photo={L.director.photo} sizes="(min-width:1024px) 30vw, 90vw" className="object-top" /></div>
               <figcaption className="mt-5 border-t border-heading/70 pt-4">
                 <p className="font-display text-[1.9rem] font-bold leading-none tracking-[-0.04em] text-heading">{L.director.name}</p>
                 <p className="eyebrow mt-2 text-accent">{L.director.role}, NADI Foundation</p>
@@ -261,23 +278,25 @@ export default function About() {
       </section>
 
       {/* G2 · Founders */}
-      <section id="founders" aria-labelledby="founders-title" className="bg-navy-deep pb-24 pt-24 text-ivory sm:pt-32 lg:pb-32 lg:pt-40">
+      <PaperSeam to={NAVY_DEEP} seed={27} />
+      <section id="founders" aria-labelledby="founders-title" className="relative bg-navy-deep pb-24 pt-24 text-ivory sm:pt-32 lg:pb-32 lg:pt-40">
+        <PaperBackdrop tone="dark" seed={27} />
         <div className="frame">
-          <Eyebrow className="text-[#BFD6EC]">Founders</Eyebrow>
+          <Eyebrow className="text-[#F2C9A0]">Founders</Eyebrow>
           <h2 id="founders-title" data-reveal-lines className="display mt-6 text-[clamp(2.6rem,6vw,5.8rem)] leading-[0.9]">
             <span className="block overflow-hidden pb-[0.05em]"><span data-line className="block">Meet the</span></span>
-            <span className="block overflow-hidden pb-[0.08em]"><span data-line className="accent block text-[#BFD6EC]">founders.</span></span>
+            <span className="block overflow-hidden pb-[0.08em]"><span data-line className="accent block text-[#F2C9A0]">founders.</span></span>
           </h2>
           <ul className="mt-14 grid grid-cols-2 gap-x-4 gap-y-12 sm:grid-cols-3 sm:gap-x-6 lg:mt-20 lg:gap-x-10">
             {[L.director, ...L.cofounders].map((p, i) => (
               <li key={p.name} className={`ab-founder ${i === 0 ? 'col-span-2 sm:col-span-1' : i === 1 ? 'sm:mt-16' : 'sm:mt-32'}`}>
                 <figure className="group">
-                  <div className="ab-founder-photo aspect-[4/5] overflow-hidden rounded-[6px] bg-navy">
+                  <div className="paper-edge ab-founder-photo aspect-[4/5] overflow-hidden rounded-[6px] bg-navy">
                     <Img photo={p.photo} sizes="(min-width:640px) 30vw, 92vw" className="object-top grayscale transition-[filter,transform] duration-700 ease-out group-hover:scale-[1.03] group-hover:grayscale-0" />
                   </div>
                   <figcaption className="mt-5 border-t border-ivory/30 pt-4">
                     <p className="font-display text-[clamp(1.15rem,2.4vw,2.2rem)] font-bold leading-tight tracking-[-0.04em]">{p.name}</p>
-                    <p className="eyebrow mt-2 text-[#BFD6EC]">{p.role}</p>
+                    <p className="eyebrow mt-2 text-[#F2C9A0]">{p.role}</p>
                   </figcaption>
                 </figure>
               </li>
@@ -288,15 +307,18 @@ export default function About() {
       </section>
 
       {/* H · Annual reports & publications */}
+      <PaperSeam to={IVORY} seed={29} />
       <AnnualReportsSection />
 
       {/* I · Closing CTA */}
+      <PaperSeam to={DONATE} seed={28} />
       <section aria-labelledby="cta-title" className="relative overflow-hidden bg-blue pb-24 pt-24 text-ivory sm:pt-32 lg:pb-32 lg:pt-40">
+        <PaperBackdrop tone="dark" seed={28} />
         <div className="frame grid gap-10 lg:grid-cols-12 lg:items-end">
           <h2 id="cta-title" data-reveal-lines className="display text-[clamp(2.8rem,7.4vw,7.6rem)] leading-[0.88] lg:col-span-9">
             <span className="block overflow-hidden pb-[0.05em]"><span data-line className="block">Be part of a</span></span>
             <span className="block overflow-hidden pb-[0.05em]"><span data-line className="block">more inclusive</span></span>
-            <span className="block overflow-hidden pb-[0.08em]"><span data-line className="accent block text-[#CFE2F4]">future.</span></span>
+            <span className="block overflow-hidden pb-[0.08em]"><span data-line className="accent block text-[#F7DFC4]">future.</span></span>
           </h2>
           <div data-reveal className="lg:col-span-3">
             <p className="text-[15.5px] leading-relaxed text-ivory/80">Support NADI's work in mental health, education and community development. NADI Foundation is 12A &amp; 80G certified.</p>

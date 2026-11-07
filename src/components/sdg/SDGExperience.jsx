@@ -8,8 +8,9 @@ import SDGWheel from './SDGWheel.jsx'
 import SDGDetails from './SDGDetails.jsx'
 import SDGProjectShowcase from './SDGProjectShowcase.jsx'
 import { Doodled } from '../Doodle.jsx'
+import PaperBackdrop from '../PaperBackdrop.jsx'
 
-const INTERVAL = 4.6 // seconds per goal
+const INTERVAL = 2.6 // seconds per goal
 const N = SDGS.length
 
 /** Next goal in the automatic rotation — verified NADI goals only. From an unverified (manually chosen)
@@ -48,7 +49,8 @@ export default function SDGExperience() {
   const goal = SDGS[active]
 
   return (
-    <section id="sdgs" ref={ref} aria-label="Sustainable Development Goals" className="relative overflow-hidden bg-white pb-24 pt-24 text-[#1C2634] sm:pt-32 lg:pb-32 lg:pt-36">
+    <section id="sdgs" ref={ref} aria-label="Sustainable Development Goals" className="relative overflow-hidden bg-[#FCF8F1] pb-24 pt-24 text-[#1C2634] sm:pt-32 lg:pb-32 lg:pt-36">
+      <PaperBackdrop tone="light" seed={3} />
       {/* the 17 official goal colours as the section's opening band */}
       <div aria-hidden="true" className="absolute inset-x-0 top-0 flex h-2">
         {SDGS.map((g) => <span key={g.n} className="flex-1" style={{ background: g.color }} />)}
@@ -72,12 +74,12 @@ export default function SDGExperience() {
             <SDGWheel active={active} onSelect={select} progress={progress} onInteract={onInteract} className="mx-auto w-full max-w-[440px] lg:max-w-[540px]" />
             {/* controls */}
             <div className="mx-auto mt-4 flex w-fit items-center gap-1.5 sm:mt-6 sm:gap-2">
-              <button type="button" aria-label="Previous goal" onClick={() => select((active - 1 + N) % N)} className="grid h-11 w-11 place-items-center rounded-full border border-[#09325A]/20 text-[#09325A] hover:bg-[#09325A] hover:text-white"><ChevronLeft size={18} /></button>
+              <button type="button" aria-label="Previous goal" onClick={() => select((active - 1 + N) % N)} className="grid h-11 w-11 place-items-center rounded-full border border-[#1C3557]/20 text-[#1C3557] hover:bg-[#4A5E88] hover:text-white"><ChevronLeft size={18} /></button>
               <button type="button" aria-label={playing ? 'Pause automatic rotation' : 'Play automatic rotation'} onClick={() => setPlaying((p) => !p)}
-                className="inline-flex h-11 min-w-[44px] items-center justify-center gap-2 rounded-full border border-white/20 px-3 text-[13px] font-semibold hover:bg-white hover:text-navy sm:px-4">
+                className="inline-flex h-11 min-w-[44px] items-center justify-center gap-2 rounded-full border border-[#1C3557]/20 px-3 text-[13px] font-semibold text-[#1C3557] hover:bg-[#4A5E88] hover:text-white sm:px-4">
                 {playing ? <Pause size={15} /> : <Play size={15} />}<span className="hidden sm:inline">{playing ? 'Pause' : 'Play'}</span>
               </button>
-              <button type="button" aria-label="Next goal" onClick={() => select((active + 1) % N)} className="grid h-11 w-11 place-items-center rounded-full border border-[#09325A]/20 text-[#09325A] hover:bg-[#09325A] hover:text-white"><ChevronRight size={18} /></button>
+              <button type="button" aria-label="Next goal" onClick={() => select((active + 1) % N)} className="grid h-11 w-11 place-items-center rounded-full border border-[#1C3557]/20 text-[#1C3557] hover:bg-[#4A5E88] hover:text-white"><ChevronRight size={18} /></button>
             </div>
           </div>
 
@@ -104,7 +106,7 @@ export default function SDGExperience() {
             </li>
           ))}
         </ol>
-        <p className="mt-4 flex items-center gap-2 text-[12.5px] text-[#1C2634]/70"><span aria-hidden="true" className="h-2.5 w-2.5 rounded-full bg-[#09325A] ring-2 ring-[#09325A]/20" /> Goals NADI's initiatives work towards — these are the ones the wheel turns through.</p>
+        <p className="mt-4 flex items-center gap-2 text-[12.5px] text-[#1C2634]/70"><span aria-hidden="true" className="h-2.5 w-2.5 rounded-full bg-[#4A5E88] ring-2 ring-[#1C3557]/20" /> Goals NADI's initiatives work towards — these are the ones the wheel turns through.</p>
         <p className="mt-2 text-[12px] text-[#1C2634]/60">Official UN Sustainable Development Goal icons and colours. NADI mappings: pamphlet and Annual Report 2025–2026.</p>
       </div>
     </section>

@@ -1,3 +1,5 @@
+import { createContext, useContext } from 'react'
+
 /**
  * The landing's world: a Kerala backwater at golden hour, made like cut paper — layered hills, coconut
  * palms, a river with a vallam (country boat), and NADI's people on the near bank: two flying kites,
@@ -11,6 +13,12 @@
 
 export const VB = '0 0 1600 900'
 const AR = 'xMaxYMax slice'
+// Portrait screens (phones, upright tablets) frame the right of the scene — the kite flyers, the sun and
+// the hills — a little wider and taller, so the people are a good size and nobody is cut off.
+const VB_PORTRAIT = '1100 -60 500 960'
+const AR_PORTRAIT = 'xMidYMax slice'
+/** true on portrait screens; NadiHero provides it */
+export const Portrait = createContext(false)
 
 // ── palette: dusk over the backwaters, people in festival colour ─────────────
 const P = {
@@ -79,9 +87,10 @@ export function SceneDefs() {
   )
 }
 
-const Layer = ({ children, className = '' }) => (
-  <svg viewBox={VB} preserveAspectRatio={AR} className={`absolute inset-0 h-full w-full ${className}`} aria-hidden="true">{children}</svg>
-)
+const Layer = ({ children, className = '' }) => {
+  const portrait = useContext(Portrait)
+  return <svg viewBox={portrait ? VB_PORTRAIT : VB} preserveAspectRatio={portrait ? AR_PORTRAIT : AR} className={`absolute inset-0 h-full w-full ${className}`} aria-hidden="true">{children}</svg>
+}
 
 // ── sky ──────────────────────────────────────────────────────────────────────
 export function Sky() {
@@ -90,7 +99,7 @@ export function Sky() {
   )
   return (
     <Layer>
-      <rect width="1600" height="900" fill="url(#rs-sky)" />
+      <rect y="-400" width="1600" height="1300" fill="url(#rs-sky)" />
       <circle cx="1240" cy="560" r="300" fill="url(#rs-glow)" />
       <g filter="url(#rs-paper)">
         <circle className="rs-sun" cx="1240" cy="560" r="92" fill="url(#rs-sun)" />
@@ -137,7 +146,9 @@ function Palm({ x, y, h, lean = 0.25, s = 1, c = P.palm }) {
   )
 }
 
-export function Banks() {
+/** `front`: only the palm that stands in front of the name (the rest of the bank sits behind it). */
+export function Banks({ front = false }) {
+  if (front) return <Layer><g filter="url(#rs-paper-s)"><Palm x={360} y={638} h={200} lean={0.24} s={1.1} /></g></Layer>
   return (
     <Layer>
       <g filter="url(#rs-paper)">
@@ -147,7 +158,6 @@ export function Banks() {
       <g filter="url(#rs-paper-s)">
         <Palm x={120} y={644} h={170} lean={0.18} />
         <Palm x={230} y={636} h={130} lean={-0.2} s={0.85} c={P.palm2} />
-        <Palm x={360} y={638} h={200} lean={0.24} s={1.1} />
         <Palm x={520} y={646} h={150} lean={-0.12} s={0.9} />
         <Palm x={640} y={654} h={112} lean={0.3} s={0.75} c={P.palm2} />
         <Palm x={820} y={664} h={86} lean={-0.2} s={0.6} />
@@ -259,9 +269,9 @@ export const FLYERS = [
   { x: 1452, y: 760, s: 1.0, face: -1, arm: [160, 6] },
 ]
 export const KITES = [
-  { x: 1000, y: 230, size: 64, a: P.coral, b: '#D9502F', tail: [P.saffron, P.teal, P.saffron, P.teal], flyer: 0 },
-  { x: 1330, y: 330, size: 46, a: P.teal, b: '#0F857D', tail: [P.coral, P.mustard, P.coral], flyer: 1 },
-  { x: 1210, y: 205, size: 32, a: P.mustard, b: '#CF9F1C', tail: [P.magenta, P.indigo], flyer: 0 },
+  { x: 1000, y: 290, size: 64, p: [1450, 450, 52, 1], a: P.coral, b: '#D9502F', tail: [P.saffron, P.teal, P.saffron, P.teal], flyer: 0 },
+  { x: 1330, y: 360, size: 46, p: [1250, 560, 40, 0], a: P.teal, b: '#0F857D', tail: [P.coral, P.mustard, P.coral], flyer: 1 },
+  { x: 1210, y: 250, size: 32, p: null, a: P.mustard, b: '#CF9F1C', tail: [P.magenta, P.indigo], flyer: 0 },
 ]
 
 function Kite({ k, i }) {
@@ -324,7 +334,11 @@ export function NearBank() {
  * Kite motion: each kite drifts and tilts on its own slow beat; its tail waves; its string re-hangs
  * from the flyer's hand. Call with t (seconds); `still` draws the resting pose.
  */
-export function driveKites(root, t, still = false) {
+export function driveKites(root, t, still = false, portrait = false, minX = 0) {
+  // landscape: keep the kites in clear sky right of the title — spread them over [lo, hi] when the title
+  // reaches further across (narrower laptops), keeping their order and spacing
+  const lo = Math.max(1000, minX), hi = Math.min(1560, Math.max(1330, lo + 220))
+  const spread = (x) => lo + ((x - 1000) / 330) * (hi - lo)
   KITES.forEach((k, i) => {
     const g = root.querySelector(`[data-kite="${i}"]`), str = root.querySelector(`[data-string="${i}"]`)
     if (!g || !str) return
@@ -332,8 +346,12 @@ export function driveKites(root, t, still = false) {
     const dx = still ? 0 : Math.sin(t * 0.6 + ph) * 14 + Math.sin(t * 1.3 + ph) * 5
     const dy = still ? 0 : Math.cos(t * 0.8 + ph) * 9
     const rot = still ? -8 : -8 + Math.sin(t * 0.9 + ph) * 7
-    const x = k.x + dx, y = k.y + dy
-    g.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${rot.toFixed(2)})`)
+    if (portrait && !k.p) { g.style.display = str.style.display = 'none'; return }
+    g.style.display = str.style.display = ''
+    const [bx0, by0, size, pf] = portrait ? k.p : [spread(k.x), k.y, k.size, k.flyer]
+    const sc = size / k.size // kites are drawn at k.size; portrait ones are scaled
+    const x = bx0 + dx, y = by0 + dy
+    g.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${rot.toFixed(2)}) scale(${sc.toFixed(3)})`)
 
     // tail: a wave hanging from the bottom point, bows along it
     const s = k.size, n = 5, seg = s * 0.55
@@ -349,8 +367,8 @@ export function driveKites(root, t, still = false) {
 
     // string: from the bridle (just below the cross-stick) to the hand, with a gentle sag
     const r = (rot * Math.PI) / 180
-    const bx = x - Math.sin(r) * s * 0.2, by = y + Math.cos(r) * s * 0.2
-    const [hx, hy] = handOf(FLYERS[k.flyer])
+    const bx = x - Math.sin(r) * s * sc * 0.2, by = y + Math.cos(r) * s * sc * 0.2
+    const [hx, hy] = handOf(FLYERS[pf])
     const mx = (bx + hx) / 2 + 30, my = (by + hy) / 2 + 40
     str.setAttribute('d', `M${bx.toFixed(1)} ${by.toFixed(1)} Q${mx.toFixed(1)} ${my.toFixed(1)} ${hx.toFixed(1)} ${hy.toFixed(1)}`)
   })

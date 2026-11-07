@@ -66,7 +66,8 @@ export default function VisionMissionScroll({ id }) {
       const tl = gsap.timeline({
         defaults: { ease: 'none' },
         scrollTrigger: {
-          trigger: '.vm-pinned', start: 'top top', end: () => `+=${window.innerHeight * N * (conditions.wide ? 1.15 : 0.95)}`,
+          // one screen of scroll per chapter, ending as soon as the last chapter has settled — no long hold
+          trigger: '.vm-pinned', start: 'top top', end: () => `+=${window.innerHeight * (N - 0.35) * (conditions.wide ? 1.05 : 0.9)}`,
           pin: true, scrub: 0.8, anticipatePin: 1, invalidateOnRefresh: true,
         },
       })
@@ -75,7 +76,7 @@ export default function VisionMissionScroll({ id }) {
         if (i > 0) {
           tl.to(descs[i - 1], { autoAlpha: 0, y: -24, duration: 0.25 }, at)
             .to(fills[i - 1], { opacity: 0, duration: 0.25 }, at)
-            .to(bases[i - 1], { opacity: 0.22, duration: 0.25 }, at)
+            .to(bases[i - 1], { opacity: 0, duration: 0.25 }, at) // earlier titles leave entirely — no ghosts
             .to(bgs[i - 1], { opacity: 0, duration: 0.35 }, at)
             .to('.vm-stack', { y: () => -lineH() * (i + 1), duration: 0.35, ease: 'power2.inOut' }, at)
             .to(bgs[i], { opacity: 1, duration: 0.35 }, at)
@@ -86,8 +87,7 @@ export default function VisionMissionScroll({ id }) {
           .to(descs[i].querySelectorAll('.vm-w'), { opacity: 1, stagger: 0.02, duration: 0.15 }, at + 0.2)
         tl.fromTo(bgs[i].querySelector('img'), { scale: 1.12 }, { scale: 1, duration: 1.2 }, at)
       })
-      tl.to('.vm-progress', { scaleX: 1, duration: N, ease: 'none' }, 0)
-      tl.to({}, { duration: 0.35 })
+      tl.to('.vm-progress', { scaleX: 1, duration: N - 0.35, ease: 'none' }, 0)
     })
   })
 
@@ -102,8 +102,8 @@ export default function VisionMissionScroll({ id }) {
             <Img photo={c.photo} sizes="100vw" alt="" />
           </div>
         ))}
-        <div aria-hidden="true" className="absolute inset-0 bg-[#073058]/35" />
-        <div aria-hidden="true" className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(7,48,88,.15) 0%, rgba(7,48,88,.55) 45%, rgba(7,48,88,.92) 100%), linear-gradient(to right, rgba(7,48,88,.55), rgba(7,48,88,0) 60%)' }} />
+        <div aria-hidden="true" className="absolute inset-0 bg-[#182C48]/35" />
+        <div aria-hidden="true" className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(24,44,72,.15) 0%, rgba(24,44,72,.55) 45%, rgba(24,44,72,.92) 100%), linear-gradient(to right, rgba(24,44,72,.55), rgba(24,44,72,0) 60%)' }} />
 
         <div className="frame relative h-full">
           <div className="absolute inset-x-5 top-[54%] sm:inset-x-8 lg:inset-x-12">
@@ -140,7 +140,7 @@ export default function VisionMissionScroll({ id }) {
             <div aria-hidden="true" className="absolute inset-0">
               <Img photo={c.photo} sizes="100vw" alt="" />
             </div>
-            <div aria-hidden="true" className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(7,48,88,.96) 0%, rgba(7,48,88,.85) 42%, rgba(7,48,88,.3) 75%, rgba(7,48,88,.5) 100%)' }} />
+            <div aria-hidden="true" className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(24,44,72,.96) 0%, rgba(24,44,72,.85) 42%, rgba(24,44,72,.3) 75%, rgba(24,44,72,.5) 100%)' }} />
             <div className="frame relative pb-14 pt-28 sm:pb-16">
               <div className="flex items-center justify-between">
                 <p className="eyebrow text-ivory/65">Our</p>

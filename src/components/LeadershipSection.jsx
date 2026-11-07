@@ -47,7 +47,7 @@ export default function LeadershipSection() {
               {L.cofounders.map((c, k) => (
                 <Reveal as="li" key={c.name} delay={k * 0.12} className={k === 1 ? 'mt-14' : ''}>
                   <figure className="group">
-                    <div className="aspect-square overflow-hidden rounded-full bg-page ring-[6px]" style={{ ["--tw-ring-color"]: k ? "#10589A" : "#0468B1" }}>
+                    <div className="aspect-square overflow-hidden rounded-full bg-page ring-[6px]" style={{ ["--tw-ring-color"]: k ? "#243E60" : "#24476B" }}>
                       <Img photo={c.photo} sizes="(min-width:1024px) 20vw, 44vw" className="object-top grayscale-[35%] transition-all duration-700 ease-out group-hover:scale-105 group-hover:grayscale-0" />
                     </div>
                     <figcaption className="mt-4">

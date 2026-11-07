@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
 import { motion, animate, useInView, useMotionValue, useScroll, useSpring, useTransform } from 'framer-motion'
 
+/** Rises into place with a slight tilt that settles — a sheet of paper set down, as on the landing. */
 export function Reveal({ children, delay = 0, y = 28, className = '', as = 'div' }) {
   const M = motion[as]
   return (
-    <M className={className} initial={{ opacity: 0, y }} whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-60px 0px' }} transition={{ duration: 0.8, delay, ease: [0.2, 0.7, 0.2, 1] }}>
+    <M className={className} initial={{ opacity: 0, y, rotate: -1.2 }} whileInView={{ opacity: 1, y: 0, rotate: 0 }} style={{ transformOrigin: '0% 100%' }}
+      viewport={{ once: true, margin: '-60px 0px' }} transition={{ duration: 1.1, delay, ease: [0.16, 1, 0.3, 1] }}>
       {children}
     </M>
   )
@@ -55,17 +56,23 @@ export function Parallax({ children, offset = 60, className = '' }) {
 /** Masked image reveal with a slow inner zoom. */
 // The in-view trigger must sit on an UNCLIPPED wrapper: Chrome's IntersectionObserver measures a target
 // after its own clip-path, so a fully clipped element can never register as visible.
+/**
+ * A photograph as a sheet of paper, torn at the edges, lifted off the page by a soft shadow — and set
+ * down as it scrolls in: it rises with a slight tilt that settles flat, the picture easing in beneath.
+ * The same gesture as the landing's paper layers rising into place.
+ */
 export function ImageReveal({ children, className = '', delay = 0, from = 'bottom' }) {
-  const hidden = { bottom: 'inset(100% 0% 0% 0%)', left: 'inset(0% 100% 0% 0%)', right: 'inset(0% 0% 0% 100%)' }[from]
+  const tilt = { bottom: -1.8, left: -2.6, right: 2.6 }[from] ?? -1.8
   return (
-    <motion.div className={`${/\b(absolute|fixed|sticky)\b/.test(className) ? '' : 'relative'} ${className}`} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.12 }}>
-      <motion.div className="absolute inset-0 overflow-hidden" style={{ borderRadius: 'inherit' }}
-        variants={{ hidden: { clipPath: hidden }, show: { clipPath: 'inset(0% 0% 0% 0%)', transition: { duration: 1.2, delay, ease: [0.76, 0, 0.24, 1] } } }}>
+    <motion.div className={`${/\b(absolute|fixed|sticky)\b/.test(className) ? '' : 'relative'} paper-lift ${className}`}
+      style={{ transformOrigin: from === 'right' ? '100% 100%' : '0% 100%' }} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.12 }}
+      variants={{ hidden: { opacity: 0, y: 70, rotate: tilt }, show: { opacity: 1, y: 0, rotate: 0, transition: { duration: 1.5, delay, ease: [0.16, 1, 0.3, 1] } } }}>
+      <div className="paper-edge absolute inset-0 overflow-hidden" style={{ borderRadius: 'inherit' }}>
         <motion.div className="h-full w-full"
-          variants={{ hidden: { scale: 1.22 }, show: { scale: 1, transition: { duration: 1.7, delay, ease: [0.22, 1, 0.36, 1] } } }}>
+          variants={{ hidden: { scale: 1.18 }, show: { scale: 1, transition: { duration: 1.8, delay, ease: [0.22, 1, 0.36, 1] } } }}>
           {children}
         </motion.div>
-      </motion.div>
+      </div>
     </motion.div>
   )
 }

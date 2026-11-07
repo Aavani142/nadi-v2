@@ -302,16 +302,24 @@ function StackedPanels() {
     </div>
   )
 }
+/**
+ * Each initiative is a sheet of paper. While it is read it lies on the pile; when the next one comes,
+ * the next sheet lands on it — arriving a touch larger (still in the air) and settling flat — and this
+ * one sinks a little deeper into the pile. Only scale and opacity move (no tilt, no masks), so it stays
+ * smooth on every device.
+ */
 function StackPanel({ i, id, progress, Comp }) {
   const n = ORDER.length - 1
   const range = [i / n, Math.min((i + 1) / n, 1)]
   const last = i === n
-  const scale = useTransform(progress, range, last ? [1, 1] : [1, 0.9])
-  const dim = useTransform(progress, range, last ? [0, 0] : [0, 0.12]) // a whisper of depth — never grey out the colour
-  const radius = useTransform(progress, range, last ? [36, 36] : [36, 56])
+  const sink = useTransform(progress, range, last ? [1, 1] : [1, 0.92])
+  const dim = useTransform(progress, range, last ? [0, 0] : [0, 0.14]) // a whisper of depth — never grey out the colour
+  // the landing: over the scroll that brings this sheet up over the last one
+  const lift = useTransform(progress, i ? [(i - 1) / n, i / n] : [0, 1], i ? [1.045, 1] : [1, 1])
+  const scale = useTransform([sink, lift], ([a, b]) => a * b)
   return (
     <div id={`work-${id}`} className="sticky top-0 h-screen overflow-hidden" style={{ zIndex: i + 1 }}>
-      <motion.article style={{ scale, borderTopLeftRadius: radius, borderTopRightRadius: radius }} className="relative h-full origin-top overflow-hidden shadow-[0_-30px_60px_-30px_rgba(10,37,64,.45)]">
+      <motion.article style={{ scale }} className="relative h-full origin-top overflow-hidden rounded-t-[32px] shadow-[0_-30px_60px_-30px_rgba(28,18,10,.5)] will-change-transform">
         <Comp i={i} />
         <LearnMore k={ORDER[i].key} name={I[ORDER[i].key].name} />
         <motion.div aria-hidden="true" style={{ opacity: dim }} className="pointer-events-none absolute inset-0 bg-black" />
@@ -347,8 +355,15 @@ function TouchStack() {
       // recede only once the next panel is well on its way over — never while this one is still being
       // read — and only a little: a whisper of depth, not a grey-out
       const st = { trigger: next, start: 'top 70%', end: 'top 8%', scrub: 0.4 }
-      gsap.to(card.querySelector('.ts-inner'), { scale: 0.95, borderRadius: 32, ease: 'none', scrollTrigger: st })
+      gsap.to(card.querySelector('.ts-inner'), { scale: 0.95, ease: 'none', scrollTrigger: st })
       gsap.to(card.querySelector('.ts-dim'), { opacity: 0.18, ease: 'none', scrollTrigger: st })
+    })
+    // the next sheet lands on the pile: a touch larger as it arrives, settling flat
+    // (on its own wrapper, so it never fights the recede above)
+    list.forEach((card, i) => {
+      if (!i) return
+      gsap.fromTo(card.querySelector('.ts-fall'), { scale: 1.04, transformOrigin: '50% 0%' }, { scale: 1, ease: 'none',
+        scrollTrigger: { trigger: card, start: 'top bottom', end: 'top 30%', scrub: 0.5 } })
     })
   })
   return (
@@ -363,10 +378,12 @@ function TouchStack() {
             {/* anchor in normal flow — sticky elements report misleading positions once stuck */}
             <span id={`work-${o.id}`} aria-hidden="true" className="block h-0" style={{ scrollMarginTop: 12 }} />
             <article className="ts-card sticky" style={{ zIndex: i + 1 }}>
-              <div className="ts-inner relative origin-top overflow-hidden rounded-[28px] shadow-[0_-24px_50px_-24px_rgba(10,37,64,.5)] will-change-transform">
+              <div className="ts-fall will-change-transform">
+              <div className="ts-inner relative origin-top overflow-hidden rounded-[28px] shadow-[0_-24px_50px_-24px_rgba(28,18,10,.45)] will-change-transform">
                 <Comp i={i} />
                 <LearnMore k={o.key} name={I[o.key].name} />
                 <div aria-hidden="true" className="ts-dim pointer-events-none absolute inset-0 bg-black opacity-0" />
+              </div>
               </div>
             </article>
           </div>

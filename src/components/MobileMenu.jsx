@@ -75,8 +75,8 @@ export default function MobileMenu({ open, onClose, isActive, renderLink }) {
                       children: (
                         <>
                           <span className="flex items-center gap-3">
-                            <span aria-hidden="true" className={`h-2 w-2 rounded-full transition-colors ${on ? 'bg-[#78BAEC]' : 'bg-transparent'}`} />
-                            <span className={`font-display text-[clamp(1.9rem,8.4vw,3rem)] font-bold leading-none tracking-[-0.04em] transition-colors ${on ? 'text-[#BFD6EC]' : 'text-ivory group-active:text-[#BFD6EC]'}`}>{n.label}</span>
+                            <span aria-hidden="true" className={`h-2 w-2 rounded-full transition-colors ${on ? 'bg-[#F2B27E]' : 'bg-transparent'}`} />
+                            <span className={`font-display text-[clamp(1.9rem,8.4vw,3rem)] font-bold leading-none tracking-[-0.04em] transition-colors ${on ? 'text-[#F2C9A0]' : 'text-ivory group-active:text-[#F2C9A0]'}`}>{n.label}</span>
                           </span>
                           <span className="mm-num eyebrow tabular-nums text-white/35">{String(i + 1).padStart(2, '0')}</span>
                         </>

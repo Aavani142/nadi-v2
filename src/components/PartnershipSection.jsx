@@ -6,6 +6,7 @@ import { ImageReveal, Reveal } from '../lib/Motion.jsx'
 import { useMedia } from '../lib/intro.js'
 import { Eyebrow, Img, Lines, PillLink } from './ui.jsx'
 import { Doodled, Doodle } from './Doodle.jsx'
+import PaperBackdrop from './PaperBackdrop.jsx'
 
 export default function PartnershipSection() {
   const fine = useMedia('(hover: hover) and (pointer: fine)')
@@ -20,6 +21,7 @@ export default function PartnershipSection() {
 
   return (
     <section id="support" aria-label="Donate and support NADI" className="relative overflow-hidden bg-blue pb-24 pt-24 text-ivory sm:pt-32 lg:pb-32 lg:pt-40">
+      <PaperBackdrop tone="dark" seed={13} />
       <div className="frame relative">
         <Eyebrow tone="text-mustard-light">Donate &amp; support</Eyebrow>
 
@@ -37,7 +39,7 @@ export default function PartnershipSection() {
         <Reveal className="mt-12 flex flex-wrap items-center gap-3 sm:gap-4">
           <span className="relative inline-block">
             <PillLink to="/donate" variant="ivory">Donate to NADI</PillLink>
-            <Doodle kind="arrow" delay={0.6} className="absolute -top-14 left-[18%] h-12 w-24 -scale-x-100 rotate-[200deg] text-[#CFE2F4] sm:-top-16 sm:h-14 sm:w-28" />
+            <Doodle kind="arrow" delay={0.6} className="absolute -top-14 left-[18%] h-12 w-24 -scale-x-100 rotate-[200deg] text-[#F7DFC4] sm:-top-16 sm:h-14 sm:w-28" />
           </span>
           <PillLink href={ctas.volunteer.href} variant="ghost">{ctas.volunteer.label}</PillLink>
           <PillLink href={ctas.partner.href} variant="ghost">{ctas.partner.label}</PillLink>

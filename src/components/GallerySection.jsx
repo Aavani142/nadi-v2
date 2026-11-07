@@ -5,6 +5,7 @@ import { photos, contact } from '../data/nadi.js'
 import { lockScroll } from '../lib/SmoothScroll.jsx'
 import { useMedia } from '../lib/intro.js'
 import { Eyebrow, Img, Lines } from './ui.jsx'
+import PaperBackdrop from './PaperBackdrop.jsx'
 
 // Every photograph is from NADI's Annual Report 2025–2026; captions describe what it documents.
 const ITEMS = [
@@ -34,7 +35,7 @@ function Column({ items, offset, progress, onOpen }) {
     <motion.div style={{ y }} className="flex flex-col gap-3 sm:gap-4">
       {items.map(({ item, i }) => (
         <button key={i} type="button" onClick={() => onOpen(i)} aria-label={`Open photo: ${item.caption}`}
-          className="group relative block overflow-hidden rounded-[14px] bg-white/5 text-left focus-visible:outline-mustard">
+          className="paper-edge group relative block overflow-hidden rounded-[14px] bg-white/5 text-left focus-visible:outline-mustard">
           <Img photo={item.photo} sizes="(min-width:1024px) 24vw, 48vw" className="!h-auto transition-transform duration-[1s] ease-out group-hover:scale-[1.06]" />
           <span className="pointer-events-none absolute inset-0 bg-gradient-to-t from-navy-deep/85 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
           <span className="pointer-events-none absolute inset-x-3 bottom-3 flex translate-y-3 items-end justify-between gap-3 text-[12.5px] font-semibold leading-snug text-ivory opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">
@@ -98,6 +99,7 @@ export default function GallerySection() {
 
   return (
     <section id="gallery" ref={ref} aria-label="Gallery" className="relative overflow-hidden bg-navy-deep pb-28 pt-24 text-ivory sm:pt-32 lg:pb-40 lg:pt-40">
+      <PaperBackdrop tone="dark" seed={7} />
       <div className="frame">
         <Eyebrow tone="text-mustard">Gallery</Eyebrow>
         <div className="mt-8 grid gap-8 lg:grid-cols-12">

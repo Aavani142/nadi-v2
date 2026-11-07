@@ -4,7 +4,7 @@ import NadiHero from '../components/NadiHero.jsx'
 import PaperSeam, { SeamDefs } from '../components/PaperSeam.jsx'
 
 // the grounds of the section each seam rises into (see the g-* tokens in index.css and tailwind.config.js)
-const IVORY = 'rgb(247 245 240)', NAVY_DEEP = 'rgb(11 72 128)', NAVY = 'rgb(16 88 150)', BLUE = 'rgb(4 92 160)', DONATE = '#0468B1'
+const IVORY = 'rgb(246 239 228)', NAVY_DEEP = 'rgb(66 84 124)', NAVY = 'rgb(78 98 140)', BLUE = '#4A5E88', DONATE = '#4C6A96', PAPER = '#FCF8F1'
 import VisionMissionScroll from '../components/VisionMissionScroll.jsx'
 import FocusSection from '../components/FocusSection.jsx'
 import InitiativesSection, { scrollToInitiative } from '../components/InitiativesSection.jsx'
@@ -74,7 +74,7 @@ export default function Home() {
       <InitiativesSection />
       <PaperSeam to={IVORY} seed={3} />
       <DirectorSection />
-      <PaperSeam to="#FFFFFF" seed={11} />
+      <PaperSeam to={PAPER} seed={11} />
       <SDGExperience />
       <PaperSeam to={BLUE} seed={6} />
       <ImpactSection />

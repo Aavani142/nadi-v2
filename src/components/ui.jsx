@@ -113,7 +113,7 @@ export function sinePath(w, h, cycles, amp, phase = 0) {
 }
 
 /** Flowing contour lines drawn from the logo's two waves, as a slowly drifting band. */
-export function RiverLines({ className = '', colors = ['#2A86C6', '#76B2E0', '#DCEAF4'], width = 1.4, draw = true, show = true, delay = 0, count = 2 }) {
+export function RiverLines({ className = '', colors = ['#3F7290', '#76B2E0', '#DCEAF4'], width = 1.4, draw = true, show = true, delay = 0, count = 2 }) {
   const W = 2880, H = 160
   const specs = [[4, 26, 0], [4, 18, 0.9], [2, 30, 2.1], [6, 12, 3.3]].slice(0, count)
   return (

@@ -4,6 +4,7 @@ import { getReports } from '../../data/reports.js'
 import { contact } from '../../data/nadi.js'
 import { gsap, revealIn, useGsap, ScrollTrigger } from '../../lib/gsap.js'
 import ReportCard from './ReportCard.jsx'
+import PaperBackdrop from '../PaperBackdrop.jsx'
 
 /** Reports come through `getReports()` — swap it for a Supabase query later; the shape stays the same. */
 function useReports() {
@@ -34,6 +35,7 @@ export default function AnnualReportsSection() {
 
   return (
     <section id="reports" ref={ref} aria-labelledby="reports-title" className="g-ivory relative pb-28 pt-24 sm:pt-32 lg:pb-36 lg:pt-40">
+      <PaperBackdrop tone="light" seed={30} />
       <div className="frame">
         <div className="grid gap-8 lg:grid-cols-12 lg:items-end">
           <div className="lg:col-span-7">

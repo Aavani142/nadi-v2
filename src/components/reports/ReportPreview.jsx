@@ -16,10 +16,10 @@ export default function ReportPreview({ report, className = '' }) {
     <div aria-hidden="true" className={`relative flex flex-col justify-between overflow-hidden rounded-[4px] bg-navy-deep p-5 text-ivory ${className}`}>
       <img src={logos.onDark} alt="" className="h-7 w-auto self-start" />
       <svg viewBox="0 0 200 40" preserveAspectRatio="none" className="absolute inset-x-0 top-1/2 h-10 w-full opacity-40">
-        <path d="M0 20 C 40 4, 80 4, 100 20 S 160 36, 200 20" fill="none" stroke="#2A86C6" strokeWidth="1.5" />
+        <path d="M0 20 C 40 4, 80 4, 100 20 S 160 36, 200 20" fill="none" stroke="#3F7290" strokeWidth="1.5" />
       </svg>
       <div>
-        <p className="eyebrow text-[#BFD6EC]">{report.type}</p>
+        <p className="eyebrow text-[#F2C9A0]">{report.type}</p>
         <p className="display mt-2 text-[1.7rem] leading-[0.95]">{report.year}</p>
       </div>
     </div>

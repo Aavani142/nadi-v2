@@ -5,6 +5,7 @@ import { leadership as L, org } from '../data/nadi.js'
 import { gsap, revealIn, useGsap, distanceScale } from '../lib/gsap.js'
 import { Img } from './ui.jsx'
 import { Doodled, Doodle } from './Doodle.jsx'
+import PaperBackdrop from './PaperBackdrop.jsx'
 
 /**
  * A MESSAGE FROM THE DIRECTOR — every sentence here is a verbatim excerpt from the Director's Message
@@ -26,6 +27,7 @@ export default function DirectorSection() {
 
   return (
     <section id="director" ref={ref} aria-labelledby="director-title" className="g-ivory relative overflow-hidden pb-28 pt-24 sm:pb-36 sm:pt-32 lg:pb-44 lg:pt-40">
+      <PaperBackdrop tone="light" seed={8} />
       <div className="frame">
         <p className="eyebrow flex items-center gap-3 text-accent"><span aria-hidden="true" className="h-px w-8 bg-current" />Director's message</p>
         <h2 id="director-title" className="display mt-6 text-[clamp(2.6rem,6vw,6rem)] leading-[0.9] text-heading">
@@ -34,8 +36,8 @@ export default function DirectorSection() {
         </h2>
 
         <div className="mt-12 grid gap-12 sm:mt-16 md:grid-cols-12 md:gap-8 lg:mt-24">
-          <figure className="dm-photo-wrap mx-auto w-full max-w-[420px] md:col-span-5 md:max-w-none lg:col-span-4">
-            <div className="dm-photo relative aspect-[4/5] overflow-hidden rounded-[6px] bg-surface">
+          <figure className="dm-photo-wrap paper-lift mx-auto w-full max-w-[420px] md:col-span-5 md:max-w-none lg:col-span-4">
+            <div className="dm-photo paper-edge relative aspect-[4/5] overflow-hidden rounded-[6px] bg-surface">
               <Img photo={L.director.photo} sizes="(min-width:1024px) 30vw, 90vw" className="object-top" />
             </div>
             <figcaption className="mt-5 border-t border-heading/80 pt-4">
