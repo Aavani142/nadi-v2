@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
-import { ArrowUpRight, ArrowLeft, ArrowRight } from 'lucide-react'
+import { ArrowUpRight } from 'lucide-react'
 import { getEvents, EVENTS_PAGE } from '../../data/events.js'
 import { Lines } from '../ui.jsx'
 import { gsap, useGsap } from '../../lib/gsap.js'
@@ -29,36 +29,26 @@ function ViewAll({ className = '' }) {
     : <a href={EVENTS_PAGE.fallback} target="_blank" rel="noopener noreferrer" className={cls} title="Opens NADI's Instagram while the events page is being prepared">{inner}</a>
 }
 
-/** Horizontal festival rail — swipe on touch, arrow buttons on desktop. */
+/**
+ * "More from NADI" — a slow, continuous marquee of uniform cards. Hovering or focusing a card pauses it;
+ * the list is rendered twice so the loop is seamless (the copy is hidden from screen readers).
+ * Reduced motion: no movement, the row simply scrolls sideways.
+ */
 function Rail({ events, onOpen }) {
-  const ref = useRef(null)
-  const [edge, setEdge] = useState({ start: true, end: false, progress: 0, visible: 1 })
-  const update = () => {
-    const el = ref.current
-    if (!el) return
-    const max = el.scrollWidth - el.clientWidth
-    setEdge({ start: el.scrollLeft < 8, end: el.scrollLeft > max - 8, progress: max > 0 ? el.scrollLeft / max : 1, visible: Math.min(el.clientWidth / el.scrollWidth, 1) })
-  }
-  useEffect(() => { update(); window.addEventListener('resize', update); return () => window.removeEventListener('resize', update) }, [])
-  const go = (d) => ref.current?.scrollBy({ left: d * (ref.current.clientWidth * 0.8), behavior: 'smooth' })
-  const btn = 'grid h-12 w-12 place-items-center rounded-full border border-fg/20 text-heading transition-colors hover:border-accent hover:bg-accent hover:text-page disabled:pointer-events-none disabled:opacity-30'
+  // ~7s per card keeps it slow enough to read, whatever the number of events
+  const duration = `${Math.max(events.length, 4) * 7}s`
   return (
-    <div className="mt-24 lg:mt-28">
+    <div className="mt-20 lg:mt-24">
       <div className="flex items-end justify-between gap-4">
         <p className="display text-[clamp(1.6rem,2.6vw,2.2rem)] text-heading">More from NADI</p>
-        <div className="flex gap-2">
-          <button type="button" className={btn} onClick={() => go(-1)} disabled={edge.start} aria-label="Previous events"><ArrowLeft size={18} /></button>
-          <button type="button" className={btn} onClick={() => go(1)} disabled={edge.end} aria-label="Next events"><ArrowRight size={18} /></button>
-        </div>
+        <p className="hidden font-mono text-[11px] uppercase tracking-[0.14em] text-fg/50 sm:block">Hover to pause · tap a card for details</p>
       </div>
-      <ul ref={ref} onScroll={update} data-lenis-prevent
-        className="no-scrollbar -mx-5 mt-8 flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-px-5 px-5 pb-6 pt-4 sm:-mx-8 sm:gap-8 sm:scroll-px-8 sm:px-8 lg:-mx-12 lg:scroll-px-12 lg:px-12">
-        {events.map((e, i) => <EventCard key={e.id} event={e} index={i} onOpen={onOpen} />)}
-      </ul>
-      {/* where you are in the rail — a thumb that tracks the swipe */}
-      <div aria-hidden="true" className="relative mt-2 h-[3px] w-full overflow-hidden rounded-full bg-fg/10">
-        <div className="absolute inset-y-0 rounded-full bg-accent transition-[left] duration-150"
-          style={{ width: `${edge.visible * 100}%`, left: `${edge.progress * (1 - edge.visible) * 100}%` }} />
+      <div className="ev-marquee no-scrollbar relative -mx-5 mt-8 overflow-hidden sm:-mx-8 lg:-mx-12"
+        style={{ maskImage: 'linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent)', WebkitMaskImage: 'linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent)' }}>
+        <ul className="ev-track drift flex w-max items-stretch gap-6 py-4 pl-6" style={{ animationDuration: duration }}>
+          {events.map((e) => <EventCard key={e.id} event={e} onOpen={onOpen} />)}
+          {events.map((e) => <EventCard key={`dup-${e.id}`} event={e} onOpen={onOpen} hidden />)}
+        </ul>
       </div>
     </div>
   )

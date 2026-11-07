@@ -10,8 +10,8 @@ import LogoMotion from './LogoMotion.jsx'
     NADI's river in three blues, and the loader dissolves into the hero.
     Real loading: logo layers + first hero photographs + fonts. Never shorter than MIN_TIME (so the
     logo finishes assembling), never longer than MAX_TIME; failed assets count as done. */
-const MIN_TIME = 2.4
-const MAX_TIME = 6
+const MIN_TIME = 1.2
+const MAX_TIME = 3
 const WAVE_W = 1440
 
 function wavePath(h, amp, cycles, phase) {

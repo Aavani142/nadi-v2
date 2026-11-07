@@ -1,23 +1,15 @@
-import { useEffect } from 'react'
-import Lenis from 'lenis'
-import { ScrollTrigger } from './gsap.js'
 
-let instance = null
+/** @type {null | { stop(): void, start(): void, resize(): void, scrollTo(...a: any[]): void }} */
+const instance = null
 
+/**
+ * Native scrolling. Lenis used to drive every frame through its own requestAnimationFrame loop,
+ * which was the single biggest constant cost on the page — the browser's own scroll is smoother
+ * on low-end phones and lets GPU compositing do its job. `instance` stays null, so every helper
+ * below falls back to native window.scrollTo({ behavior: 'smooth' }).
+ */
+// eslint-disable-next-line no-unused-vars
 export default function SmoothScroll({ paused }) {
-  useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    const l = new Lenis({ lerp: 0.09, wheelMultiplier: 0.95 })
-    instance = l
-    l.on('scroll', ScrollTrigger.update) // keep GSAP scroll animations in step with smooth scrolling
-    let id
-    const raf = (t) => { l.raf(t); id = requestAnimationFrame(raf) }
-    id = requestAnimationFrame(raf)
-    return () => { cancelAnimationFrame(id); l.destroy(); instance = null }
-  }, [])
-  useEffect(() => {
-    if (instance) (paused ? instance.stop() : instance.start())
-  }, [paused])
   return null
 }
 

@@ -1,6 +1,10 @@
 import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
-import VideoHero from '../components/VideoHero.jsx'
+import NadiHero from '../components/NadiHero.jsx'
+import PaperSeam, { SeamDefs } from '../components/PaperSeam.jsx'
+
+// the grounds of the section each seam rises into (see the g-* tokens in index.css and tailwind.config.js)
+const IVORY = 'rgb(247 245 240)', NAVY_DEEP = 'rgb(11 72 128)', NAVY = 'rgb(16 88 150)', BLUE = 'rgb(4 92 160)', DONATE = '#0468B1'
 import VisionMissionScroll from '../components/VisionMissionScroll.jsx'
 import FocusSection from '../components/FocusSection.jsx'
 import InitiativesSection, { scrollToInitiative } from '../components/InitiativesSection.jsx'
@@ -58,19 +62,33 @@ export default function Home() {
 
   return (
     <main id="main">
-      <VideoHero />
+      {/* each section rises over the last as a cut-paper ridgeline — the landing's hills, carried down the page */}
+      <SeamDefs />
+      <NadiHero />
+      <PaperSeam to={IVORY} seed={2} />
+      <EventsSection />
+      {/* no seam into Vision: its frame is pinned, and a seam would scroll across the fixed photograph */}
       <VisionMissionScroll id="vision" />
+      <PaperSeam to={IVORY} seed={8} />
       <FocusSection />
       <InitiativesSection />
+      <PaperSeam to={IVORY} seed={3} />
       <DirectorSection />
+      <PaperSeam to="#FFFFFF" seed={11} />
       <SDGExperience />
-      <EventsSection />
+      <PaperSeam to={BLUE} seed={6} />
       <ImpactSection />
+      <PaperSeam to={IVORY} seed={9} />
       <NetworkSection />
+      <PaperSeam to={NAVY} seed={4} />
       <ResearchSection />
+      <PaperSeam to={IVORY} seed={12} />
       <StoriesSection />
+      <PaperSeam to={NAVY_DEEP} seed={7} />
       <GallerySection />
+      <PaperSeam to={IVORY} seed={10} />
       <TeamSection />
+      <PaperSeam to={DONATE} seed={13} />
       <SupportSection />
     </main>
   )

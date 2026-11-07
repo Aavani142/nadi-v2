@@ -129,7 +129,7 @@ export default function VisionMissionScroll({ id }) {
               </div>
             ))}
           </div>
-          <p className="eyebrow absolute bottom-6 left-5 right-5 text-ivory/45 sm:left-8 lg:left-12">NADI Foundation · Pamphlet &amp; Annual Report 2025–2026</p>
+          <p className="eyebrow absolute bottom-[calc(clamp(34px,4.6vw,72px)+16px)] left-5 right-5 text-ivory/45 sm:left-8 lg:left-12">NADI Foundation · Pamphlet &amp; Annual Report 2025–2026</p>
         </div>
       </div>
 

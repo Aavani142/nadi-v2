@@ -70,14 +70,14 @@ export default function Navbar() {
         initial={{ y: -100 }} animate={{ y: !revealed ? -100 : hidden && !open ? -100 : 0 }}
         transition={{ duration: 0.7, ease: EASE, delay: firstIn.current ? 0.9 : 0 }}
         onAnimationComplete={() => { if (revealed) firstIn.current = false }}>
-        <div className={`transition-[background-color,box-shadow,backdrop-filter] duration-500 ${solid && !open ? 'bg-navy-deep/90 shadow-[0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-md' : 'bg-transparent'}`}>
+        <div className={`transition-[background-color,box-shadow] duration-500 ${solid && !open ? 'bg-navy-deep/[.97] shadow-[0_1px_0_rgba(255,255,255,0.06)]' : 'bg-transparent'}`}>
           {!solid && !open && <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-32 bg-gradient-to-b from-navy-deep/60 to-transparent" />}
-          <nav aria-label="Primary" className={`frame flex items-center justify-between gap-6 transition-[height] duration-500 ${solid ? 'h-16' : 'h-20'}`}>
+          <nav aria-label="Primary" className={`frame flex items-center justify-between gap-3 sm:gap-6 transition-[height] duration-500 ${solid ? 'h-16' : 'h-20'}`}>
             {/* transparent logo: ivory wordmark over the dark hero / open menu, full colour on the light bar */}
             <a href="#top" onClick={(e) => onAnchor(e, '#top')} className="relative z-[60] grid shrink-0" aria-label="NADI Foundation — home">
               {/* the official logo, assembling itself as the header arrives; ripples on hover / tap */}
               <LogoMotion variant="dark" play={revealed} delay={0.9} ripple
-                className={`w-auto transition-[height] duration-500 ${solid ? 'h-9' : 'h-12'}`} />
+                className={`w-auto transition-[height] duration-500 ${solid ? 'h-8 sm:h-9' : 'h-10 sm:h-12'}`} />
             </a>
 
             <ul className={`hidden items-center gap-0.5 xl:flex ${tone}`}>
@@ -99,9 +99,9 @@ export default function Navbar() {
             <div className="flex items-center gap-2">
               <NavLink item={cta} onAnchor={onAnchor}
                 aria-current={pathname === cta.path ? 'page' : undefined}
-                className="group inline-flex min-h-[44px] items-center gap-1.5 rounded-full bg-ivory px-4 py-2 text-[13px] font-semibold text-navy-deep shadow-[0_8px_24px_-12px_rgba(0,0,0,.5)] transition-colors duration-300 hover:bg-[#78BAEC] sm:gap-2 sm:px-5 sm:py-2.5 sm:text-[13.5px]">
+                className="group inline-flex min-h-[44px] items-center gap-1.5 rounded-full bg-ivory px-3.5 py-2 text-[13px] max-[359px]:px-3 font-semibold text-navy-deep shadow-[0_8px_24px_-12px_rgba(0,0,0,.5)] transition-colors duration-300 hover:bg-[#78BAEC] sm:gap-2 sm:px-5 sm:py-2.5 sm:text-[13.5px]">
                 {cta.label}
-                <ArrowUpRight size={15} className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                <ArrowUpRight size={15} className="max-[359px]:hidden transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
               </NavLink>
               <button type="button" onClick={() => setOpen((o) => !o)} aria-expanded={open} aria-controls="mobile-menu" aria-label={open ? 'Close menu' : 'Open menu'}
                 className={`relative z-[60] grid h-12 w-12 place-items-center rounded-full transition-colors xl:hidden ${open ? 'bg-ivory text-navy' : 'bg-ivory/15 text-ivory backdrop-blur'}`}>

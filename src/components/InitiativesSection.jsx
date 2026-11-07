@@ -49,39 +49,66 @@ const Title = ({ children, className }) => (
   <Lines as="h3" className={`display leading-[0.88] ${className}`} lines={[children]} />
 )
 
+/**
+ * Quiet background detail for each initiative panel — a large outlined index numeral, fine contour rings
+ * (NADI = river: ripples) and a dot grid, all in the panel's own colour at low strength. Sits behind
+ * the content (the panel root is `isolate`, decor is z-[-1]) so it never covers text or photos.
+ */
+function Decor({ n, color, numeral = 'left-[-1.5%] bottom-[-6%]', rings = 'right-[-12%] top-[-18%]', dots = 'left-[46%] top-[7%]' }) {
+  return (
+    <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-[1] overflow-hidden">
+      {numeral && (
+        <span className={`display absolute select-none text-[clamp(12rem,20vw,22rem)] leading-none ${numeral}`}
+          style={{ color: 'transparent', WebkitTextStroke: `1.5px ${color}`, opacity: 0.16 }}>{n}</span>
+      )}
+      <svg className={`absolute h-[min(70vw,720px)] w-[min(70vw,720px)] ${rings}`} viewBox="0 0 200 200" fill="none" style={{ opacity: 0.22 }}>
+        {[96, 82, 68, 54, 40, 26].map((r, k) => (
+          <circle key={r} cx="100" cy="100" r={r} stroke={color} strokeWidth="0.35" strokeDasharray={k % 2 ? '1.5 2.5' : undefined} />
+        ))}
+      </svg>
+      <svg className={`absolute h-24 w-40 ${dots}`} viewBox="0 0 160 96" style={{ opacity: 0.35 }}>
+        {Array.from({ length: 6 * 10 }, (_, k) => (
+          <circle key={k} cx={8 + (k % 10) * 16} cy={8 + Math.floor(k / 10) * 16} r="1.4" fill={color} />
+        ))}
+      </svg>
+    </div>
+  )
+}
+
 // ───────── 01 Kappiness — espresso, caramel, amber ─────────
 function Kappiness({ i }) {
   const p = I.kappiness
   return (
-    <div className="relative grid h-full gap-10 px-5 py-12 text-[#F4E6CF] sm:px-10 lg:grid-cols-12 lg:gap-8 lg:px-12 lg:py-14" style={{ background: 'radial-gradient(120% 90% at 85% 10%, #4A2C1A 0%, #2B1A10 55%, #21140C 100%)' }}>
+    <div className="relative isolate grid h-full gap-10 px-5 py-12 text-[#3B2416] sm:px-10 lg:grid-cols-12 lg:gap-8 lg:px-12 lg:py-14" style={{ background: 'radial-gradient(120% 90% at 85% 10%, #FBF3E8 0%, #F3E3CF 55%, #EAD3B8 100%)' }}>
+      <Decor n="01" color="#9A5A2E" numeral={false} />
       <div className="flex flex-col lg:col-span-5">
-        <Index i={i} theme={p.theme} className="text-[#E3A857]" />
+        <Index i={i} theme={p.theme} className="text-[#A0562A]" />
         <div className="mt-8 flex items-center gap-4">
-          <Plaque src={p.logo} alt="Kappiness logo" className="bg-[#FBF3E6]" imgClass="h-11" />
+          <Plaque src={p.logo} alt="Kappiness logo" className="bg-white" imgClass="h-11" />
         </div>
-        <Title className="accent mt-6 text-[clamp(3.8rem,8vw,8rem)] text-[#E3A857]">Kappiness</Title>
-        <p className="eyebrow mt-3 text-[#F4E6CF]/70">{p.focus}</p>
+        <Title className="accent mt-6 text-[clamp(3.8rem,8vw,8rem)] text-[#A0562A]">Kappiness</Title>
+        <p className="eyebrow mt-3 text-[#3B2416]/65">{p.focus}</p>
         <p className="mt-6 max-w-lg font-serif text-[clamp(1.15rem,1.6vw,1.45rem)] font-light leading-snug">{p.lede}</p>
-        <p className="mt-4 max-w-lg text-[14.5px] leading-relaxed text-[#F4E6CF]/65">{p.body}</p>
-        <dl className="mt-8 grid grid-cols-2 gap-x-6 gap-y-5 border-t border-[#F4E6CF]/15 pt-6 sm:grid-cols-4 lg:mt-auto lg:grid-cols-4">
+        <p className="mt-4 max-w-lg text-[14.5px] leading-relaxed text-[#3B2416]/70">{p.body}</p>
+        <dl className="mt-8 grid grid-cols-2 gap-x-6 gap-y-5 border-t border-[#3B2416]/15 pt-6 sm:grid-cols-4 lg:mt-auto lg:grid-cols-4">
           {p.stats.map((s) => (
             <div key={s.l}>
               <dt className="sr-only">{s.l}</dt>
-              <dd className="font-serif text-4xl font-light text-[#E3A857]"><CountUp to={s.v} suffix={s.s} duration={1.6} /></dd>
-              <dd className="mt-1 text-[12px] leading-snug text-[#F4E6CF]/60">{s.l}</dd>
+              <dd className="font-serif text-4xl font-light text-[#A0562A]"><CountUp to={s.v} suffix={s.s} duration={1.6} /></dd>
+              <dd className="mt-1 text-[12px] leading-snug text-[#3B2416]/65">{s.l}</dd>
             </div>
           ))}
         </dl>
-        <SdgChips list={p.sdgs} light className="mt-6" />
+        <SdgChips list={p.sdgs} className="mt-6" />
       </div>
 
       <div className="relative h-[115vw] max-h-[640px] lg:col-span-7 lg:h-full lg:max-h-none">
         <Shot photo={photos.kappinessGarden} sizes="(min-width:1024px) 30vw, 60vw" className="absolute bottom-0 right-0 top-[4%] w-[60%] rounded-t-full" />
         <Shot photo={photos.kappinessRoom} sizes="(min-width:1024px) 18vw, 40vw" delay={0.15} className="absolute left-[6%] top-0 w-[40%] rounded-[22px] aspect-[4/3]" from="left" />
-        <div className="absolute bottom-[6%] left-0 w-[46%] rounded-full p-2" style={{ background: '#2B1A10' }}>
+        <div className="absolute bottom-[6%] left-0 w-[46%] rounded-full p-2" style={{ background: '#F3E3CF' }}>
           <Shot photo={photos.kappinessReading} sizes="(min-width:1024px) 20vw, 45vw" delay={0.3} className="aspect-square rounded-full" />
         </div>
-        <p className="absolute bottom-0 right-0 translate-y-full pt-3 text-[12px] text-[#F4E6CF]/50 lg:translate-y-0 lg:pb-1 lg:pr-[62%] lg:text-right">Kappiness Mental Health Café &amp; Therapeutic Centre</p>
+        <p className="absolute bottom-0 right-0 translate-y-full pt-3 text-[12px] text-[#3B2416]/55 lg:translate-y-0 lg:pb-1 lg:pr-[62%] lg:text-right">Kappiness Mental Health Café &amp; Therapeutic Centre</p>
       </div>
     </div>
   )
@@ -96,7 +123,8 @@ function Prabodhini({ i }) {
     { photo: photos.prabodhiniActivity, r: -2 },
   ]
   return (
-    <div className="relative grid h-full bg-[#EFE5CF] text-[#2A2117] lg:grid-cols-12">
+    <div className="relative isolate grid h-full bg-[#EFE5CF] text-[#2A2117] lg:grid-cols-12">
+      <Decor n="02" color="#2F5D46" numeral="right-[-1%] bottom-[-6%]" rings="right-[-20%] top-[-30%]" dots="right-[6%] top-[8%]" />
       <div className="relative h-[80vw] max-h-[560px] lg:col-span-6 lg:h-full lg:max-h-none">
         <Shot photo={photos.learningPlay} sizes="(min-width:1024px) 50vw, 100vw" from="left" className="absolute inset-0 rounded-b-[48px] lg:rounded-b-none lg:rounded-r-[220px]" />
         <span className="absolute bottom-5 left-5 inline-flex items-center gap-2 rounded-full bg-[#EFE5CF] px-3.5 py-2 text-[12px] font-semibold lg:bottom-8 lg:left-8">
@@ -142,7 +170,8 @@ function YouthForAction({ i }) {
     { photo: photos.communityVisit, c: 'col-span-3 row-span-3' },
   ]
   return (
-    <div className="relative h-full overflow-hidden bg-[#10589A] text-white">
+    <div className="relative isolate h-full overflow-hidden bg-[#10589A] text-white">
+      <Decor n="03" color="#CFE2F5" numeral={false} rings="left-[-18%] bottom-[-30%]" dots="left-[30%] bottom-[6%]" />
       <div className="relative grid h-full gap-10 px-5 py-12 sm:px-10 lg:grid-cols-12 lg:gap-10 lg:px-12 lg:py-14">
         <div className="flex flex-col lg:col-span-5">
           <Index i={i} theme={p.theme} className="text-[#9CC0E4]" />
@@ -181,7 +210,8 @@ function YouthForAction({ i }) {
 function Ekatva({ i }) {
   const p = I.ekatva
   return (
-    <div className="flex h-full flex-col bg-[#F4E1DE] text-[#1E1416]">
+    <div className="relative isolate flex h-full flex-col bg-[#F4E1DE] text-[#1E1416]">
+      <Decor n="04" color="#8C1D40" numeral="right-[-1%] bottom-[-8%]" rings="left-[-16%] bottom-[-40%]" dots="right-[30%] bottom-[10%]" />
       <div className="relative h-[52vw] max-h-[420px] shrink-0 lg:h-[38%] lg:max-h-none">
         <Shot photo={photos.ekatvaConvocation} sizes="100vw" from="right" className="absolute inset-0" />
         <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/55 to-transparent px-5 pb-4 pt-16 sm:px-10 lg:px-12">
@@ -217,7 +247,8 @@ function Ekatva({ i }) {
 function Navajeevana({ i }) {
   const p = I.navajeevana
   return (
-    <div className="relative grid h-full gap-10 overflow-hidden bg-[#0E3B2E] px-5 py-12 text-[#E8F3EC] sm:px-10 lg:grid-cols-12 lg:gap-8 lg:px-12 lg:py-14">
+    <div className="relative isolate grid h-full gap-10 overflow-hidden bg-[#0E3B2E] px-5 py-12 text-[#E8F3EC] sm:px-10 lg:grid-cols-12 lg:gap-8 lg:px-12 lg:py-14">
+      <Decor n="05" color="#F2C230" numeral="left-[30%] bottom-[-8%]" rings="right-[-20%] bottom-[-30%]" dots="left-[38%] top-[6%]" />
       <div className="flex flex-col lg:col-span-6">
         <Index i={i} theme={p.theme} className="text-[#F2C230]" />
         <Plaque src={p.logo} alt="Navajeevana logo" imgClass="h-20" className="mt-6 px-3 py-2" />
@@ -301,18 +332,23 @@ function TouchStack() {
     const place = () => cards().forEach((c) => { c.style.top = `${Math.min(0, window.innerHeight - c.offsetHeight)}px` })
     place()
     ScrollTrigger.addEventListener('refreshInit', place)
-    const ro = new ResizeObserver(() => ScrollTrigger.refresh())
+    // images settling change card heights many times in a burst — re-measure once it has calmed down,
+    // not on every change (repeated refreshes mid-scroll made the stack jump)
+    let t
+    const ro = new ResizeObserver(() => { clearTimeout(t); t = setTimeout(() => ScrollTrigger.refresh(), 250) })
     cards().forEach((c) => ro.observe(c))
-    return () => { ScrollTrigger.removeEventListener('refreshInit', place); ro.disconnect() }
+    return () => { clearTimeout(t); ScrollTrigger.removeEventListener('refreshInit', place); ro.disconnect() }
   }, [])
   useGsap(ref, () => {
     const list = gsap.utils.toArray('.ts-card')
     list.forEach((card, i) => {
       const next = list[i + 1]
       if (!next) return
-      const st = { trigger: next, start: 'top bottom', end: 'top 15%', scrub: true }
-      gsap.to(card.querySelector('.ts-inner'), { scale: 0.9, borderRadius: 40, ease: 'none', scrollTrigger: st })
-      gsap.to(card.querySelector('.ts-dim'), { opacity: 0.35, ease: 'none', scrollTrigger: st })
+      // recede only once the next panel is well on its way over — never while this one is still being
+      // read — and only a little: a whisper of depth, not a grey-out
+      const st = { trigger: next, start: 'top 70%', end: 'top 8%', scrub: 0.4 }
+      gsap.to(card.querySelector('.ts-inner'), { scale: 0.95, borderRadius: 32, ease: 'none', scrollTrigger: st })
+      gsap.to(card.querySelector('.ts-dim'), { opacity: 0.18, ease: 'none', scrollTrigger: st })
     })
   })
   return (
